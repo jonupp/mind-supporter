@@ -7,4 +7,4 @@
 * Notification (2)
 * Kamera um Fotos in Task einzubinden (2)
 * Widget mit nächstem fälligen Task (2)
-* **Total** (15)
+* **Total (15)**
