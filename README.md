@@ -2,7 +2,7 @@
 ## Features
 * Formular zur Erfassung eines Tasks (2)
 * Offene Tasks / Abgeschlossene Tasks (3)
-* Kalenderansicht (2)
+* Kalenderansicht (2) oder falls nicht möglich: Lokalisierung (2)
 * Persistenz der Tasks (2)
 * Notification (2)
 * Kamera um Fotos in Task einzubinden (2)
