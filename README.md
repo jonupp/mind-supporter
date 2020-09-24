@@ -1,5 +1,5 @@
 # Mind-Supporter
-=======
+=======HEAD
 Die App erfasst zu erledigende Aufträge und erinnert mittels Notifications falls eine Aufgabe bald fällig ist. Ausserdem stellt die App eine Liste der erledigten Aufträge zu Verfügung.
 >>>>>>> 00d01dd66f573de5cf7001842c4626da9ea29f53
 ## Features
@@ -11,5 +11,3 @@ Die App erfasst zu erledigende Aufträge und erinnert mittels Notifications fall
 * Kamera um Fotos in Task einzubinden (2)
 * Widget mit nächstem fälligen Task (2)
 * **Total (15)**
-
-HALLOOOO
