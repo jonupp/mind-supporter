@@ -1,4 +1,5 @@
 # Mind-Supporter
+Die App erfasst zu erledigende Aufträge und erinnert mittels Notifications falls eine Aufgabe bald fällig ist.
 ## Features
 * Formular zur Erfassung eines Tasks (2)
 * Offene Tasks / Abgeschlossene Tasks (3)
