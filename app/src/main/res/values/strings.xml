@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Mind-Supporter</string>
+    <string name="show_pending">Show pending</string>
+    <string name="show_finished">Show finished</string>
+    <string name="show_all">Show all</string>
 </resources>
