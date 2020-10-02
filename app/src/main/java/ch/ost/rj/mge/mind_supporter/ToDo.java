@@ -13,6 +13,15 @@ public class ToDo {
     private boolean finished;
     private Image image;
 
+    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Image image){
+        this.title=title;
+        this.dueDateTime=dueDateTime;
+        this.durationMinutes=durationMinutes;
+        this.priority=priority;
+        this.finished=finished;
+        this.image=image;
+    }
+
     public String getTitle() {
         return title;
     }
