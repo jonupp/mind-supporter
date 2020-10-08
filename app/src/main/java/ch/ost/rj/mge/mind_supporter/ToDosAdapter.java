@@ -19,6 +19,11 @@ public class ToDosAdapter extends RecyclerView.Adapter {
         this.toDoArrayList=input;
     }
 
+    public void setAdapterDataBasis(ArrayList<ToDo> in){
+        this.toDoArrayList = in;
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ToDosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

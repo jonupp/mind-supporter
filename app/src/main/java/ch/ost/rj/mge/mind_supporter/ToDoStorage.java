@@ -5,29 +5,30 @@ import java.util.ArrayList;
 
 public class ToDoStorage {
     private static ArrayList<ToDo> toDoArrayList;
-    private static ArrayList<ToDo> finishedToDoArrayList;
-    private static ArrayList<ToDo> pendingToDoArrayList;
 
-    public static ArrayList<ToDo> getFinishedToDoArrayList() {
-        return finishedToDoArrayList;
+    public static ArrayList<ToDo> getFinished(){
+        ArrayList<ToDo> out = new ArrayList<>();
+        for(ToDo tmp : toDoArrayList){
+            if(tmp.isFinished()){
+                out.add(tmp);
+            }
+        }
+        return out;
     }
 
-    public static void setFinishedToDoArrayList(ArrayList<ToDo> finishedToDoArrayList) {
-        ToDoStorage.finishedToDoArrayList = finishedToDoArrayList;
-    }
-
-    public static ArrayList<ToDo> getPendingToDoArrayList() {
-        return pendingToDoArrayList;
-    }
-
-    public static void setPendingToDoArrayList(ArrayList<ToDo> pendingToDoArrayList) {
-        ToDoStorage.pendingToDoArrayList = pendingToDoArrayList;
+    public static ArrayList<ToDo> getPending(){
+        ArrayList<ToDo> out = new ArrayList<>();
+        for(ToDo tmp : toDoArrayList){
+            if(!tmp.isFinished()){
+                out.add(tmp);
+            }
+        }
+        return out;
     }
 
     static{
         toDoArrayList = new ArrayList<ToDo>();
-        finishedToDoArrayList = new ArrayList<ToDo>();
-        pendingToDoArrayList = new ArrayList<ToDo>();
+
 
         ToDo test1 = new ToDo("Shopping",LocalDateTime.now(),100,1,false, null);
         ToDo test2 = new ToDo("Learning", LocalDateTime.now(), 60, 2, false, null);
