@@ -24,29 +24,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onGroupItemClick(MenuItem item) {
-        // One of the group items (using the onClick attribute) was clicked
-        // The item parameter passed here indicates which item it is
-        // All other menu item clicks are handled by <code><a href="/reference/android/app/Activity.html#onOptionsItemSelected(android.view.MenuItem)">onOptionsItemSelected()</a></code>
     switch(item.getItemId()){
         case R.id.show_pending:
-            if(item.isChecked()){
-                return;
-            }
-            //ToDoStorage.moveFinishedToFinishedArrayList();
-            adapter.notifyDataSetChanged();
-            item.setChecked(true);
+            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getFinished());
             break;
         case R.id.show_finished:
-            if(item.isChecked()){
-                return;
-            }
-            //ToDoStorage.movePendingToPendingArrayList();
-            adapter.notifyDataSetChanged();
+            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getPending());
             break;
         case R.id.show_all:
+            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getToDoArrayList());
             break;
         }
-
     }
 
     @Override
