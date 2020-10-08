@@ -5,10 +5,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -21,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.example_menu, menu);
         return true;
+    }
+
+    private void openNewToDo(){
+        Intent intent = new Intent(this, NewToDo.class);
+        startActivity(intent);
     }
 
     public void onGroupItemClick(MenuItem item) {
@@ -63,5 +73,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        FloatingActionButton newToDo = findViewById(R.id.floatingActionButton2);
+        newToDo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                openNewToDo();
+            }
+        });
     }
 }

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewToDo">
+
+    <TextView
+        android:id="@+id/new_todo_text_what"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/new_todo_activity"
+        android:labelFor="@id/new_todo_edittext_what"
+        app:layout_constraintBaseline_toBaselineOf="@+id/new_todo_edittext_what"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/new_todo_text_deadline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/new_todo_Button_deadline_date"
+        android:text="@string/new_todo_deadline"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
+        app:layout_constraintBottom_toBottomOf="@+id/new_todo_Button_deadline_date"
+        app:layout_constraintTop_toTopOf="@+id/new_todo_Button_deadline_date" />
+
+    <TextView
+        android:id="@+id/new_todo_text_time_expenditure"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/new_todo_numberpicker_time_expenditure"
+        android:text="@string/new_todo_time_expenditure"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
+        app:layout_constraintBottom_toBottomOf="@id/new_todo_numberpicker_time_expenditure"
+        app:layout_constraintTop_toTopOf="@id/new_todo_numberpicker_time_expenditure"/>
+
+    <TextView
+        android:id="@+id/new_todo_text_priority"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/new_todo_ratingbar_priority"
+        android:text="@string/new_todo_priority"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
+        app:layout_constraintTop_toTopOf="@+id/new_todo_ratingbar_priority"
+        app:layout_constraintBottom_toBottomOf="@+id/new_todo_ratingbar_priority" />
+
+    <EditText
+        android:id="@+id/new_todo_edittext_what"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="text"
+        android:enabled="true"
+        android:importantForAutofill="no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/new_todo_text_what"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/new_todo_Button_deadline_date"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:importantForAutofill="no"
+        app:layout_constraintStart_toEndOf="@+id/new_todo_text_deadline"
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
+
+    <Button
+        android:id="@+id/new_todo_Button_deadline_time"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
+        android:shadowColor="@android:color/holo_green_light"
+        android:importantForAutofill="no"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_edittext_what"
+        app:layout_constraintStart_toEndOf="@+id/new_todo_Button_deadline_date"
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
+
+    <NumberPicker
+        android:id="@+id/new_todo_numberpicker_time_expenditure"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+
+        android:importantForAutofill="no"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_edittext_what"
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_Button_deadline_date" />
+
+    <Spinner
+        android:id="@+id/new_todo_spinner_timeunits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:prompt="@string/app_name"
+        app:layout_constraintStart_toEndOf="@id/new_todo_numberpicker_time_expenditure"
+        app:layout_constraintBottom_toBottomOf="@+id/new_todo_numberpicker_time_expenditure"
+        app:layout_constraintTop_toTopOf="@+id/new_todo_numberpicker_time_expenditure"
+        />
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/new_todo_ratingbar_priority"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="0dp"
+        android:numStars="5"
+        android:importantForAutofill="no"
+        app:layout_constraintStart_toEndOf="@+id/new_todo_text_priority"
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_numberpicker_time_expenditure" />
+
+    <EditText
+        android:id="@+id/new_todo_edittext_note"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="start|top"
+        android:hint="@string/new_todo_your_note"
+        android:inputType="textMultiLine|textAutoComplete|textAutoCorrect"
+        android:importantForAutofill="no"
+        app:layout_constraintBottom_toTopOf="@+id/floating_action_button_transact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_ratingbar_priority" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#2196F3"
+        android:clickable="true"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/new_todo_text_what"
+        app:srcCompat="@android:drawable/ic_menu_upload" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_transact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#4CAF50"
+        android:clickable="true"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_abort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:backgroundTint="#F44336"
+        android:clickable="true"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/floating_action_button_transact"
+        app:layout_constraintEnd_toStartOf="@id/floating_action_button_transact"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
