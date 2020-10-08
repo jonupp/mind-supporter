@@ -12,14 +12,16 @@ public class ToDo {
     private int priority;
     private boolean finished;
     private Image image;
+    private String note;
 
-    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Image image){
+    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Image image, String note){
         this.title=title;
         this.dueDateTime=dueDateTime;
         this.durationMinutes=durationMinutes;
         this.priority=priority;
         this.finished=finished;
         this.image=image;
+        this.note = note;
     }
 
     public String getTitle() {
@@ -69,4 +71,8 @@ public class ToDo {
     public void setImage(Image image) {
         this.image = image;
     }
+
+    public String getNote(){ return note; }
+
+    public void setNote(String note){ this.note = note; }
 }
