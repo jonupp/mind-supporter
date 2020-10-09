@@ -29,12 +29,12 @@ public class ToDoStorage {
     static{
         toDoArrayList = new ArrayList<ToDo>();
 
-        ToDo test1 = new ToDo("Shopping",LocalDateTime.now(),100,1,false, null);
-        ToDo test2 = new ToDo("Learning", LocalDateTime.now(), 60, 2, false, null);
-        ToDo test3 = new ToDo("Football", LocalDateTime.now(), 60, 2, true, null);
+        ToDo test1 = new ToDo("Shopping",LocalDateTime.now(),100,1,false, null, "");
+        ToDo test2 = new ToDo("Learning", LocalDateTime.now(), 60, 2, false, null, "");
+        ToDo test3 = new ToDo("Football", LocalDateTime.now(), 60, 2, true, null, "");
 
         for(int i = 0;i < 20;i++){
-            toDoArrayList.add(new ToDo("Automatic", LocalDateTime.now(), 99, 5, false, null));
+            toDoArrayList.add(new ToDo("Automatic", LocalDateTime.now(), 99, 5, false, null,""));
         }
 
         toDoArrayList.add(test1);
