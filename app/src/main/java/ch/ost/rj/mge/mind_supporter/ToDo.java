@@ -1,10 +1,6 @@
 package ch.ost.rj.mge.mind_supporter;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.VectorDrawable;
-import android.media.Image;
 
 import java.time.LocalDateTime;
     //Jonas = ToDoList Activity
@@ -16,13 +12,17 @@ public class ToDo {
     private int priority;
     private boolean finished;
     private Bitmap image;
+    private String note;
 
-    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Bitmap image){
+
+
+    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Bitmap image, String note){
         this.title=title;
         this.dueDateTime=dueDateTime;
         this.durationMinutes=durationMinutes;
         this.priority=priority;
         this.finished=finished;
+        this.note = note;
         if(image == null){ //User provided no image --> use standard image in to_do_list_item_layout
             return;
         }
@@ -76,4 +76,8 @@ public class ToDo {
     public void setImage(Bitmap image) {
         this.image = image;
     }
+
+    public String getNote(){ return note; }
+
+    public void setNote(String note){ this.note = note; }
 }
