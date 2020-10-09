@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#c7b800</color>
     <color name="colorAccent">#1b0000</color>
     <color name="colorRecyclerItemTextColor">#000000</color>
-    <color name="colorBackground">#fcf8f8</color>
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="light_green">#D7FFAF</color>
+    <color name="light_red">#FFAFAF</color>
 </resources>

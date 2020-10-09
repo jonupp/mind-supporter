@@ -1,5 +1,9 @@
 package ch.ost.rj.mge.mind_supporter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.VectorDrawable;
 import android.media.Image;
 
 import java.time.LocalDateTime;
@@ -11,15 +15,18 @@ public class ToDo {
     private int durationMinutes;
     private int priority;
     private boolean finished;
-    private Image image;
+    private Bitmap image;
 
-    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Image image){
+    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Bitmap image){
         this.title=title;
         this.dueDateTime=dueDateTime;
         this.durationMinutes=durationMinutes;
         this.priority=priority;
         this.finished=finished;
-        this.image=image;
+        if(image == null){ //User provided no image --> use standard image in to_do_list_item_layout
+            return;
+        }
+        this.image=image; //User provided an image
     }
 
     public String getTitle() {
@@ -62,11 +69,11 @@ public class ToDo {
         this.finished = finished;
     }
 
-    public Image getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 }

@@ -59,6 +59,7 @@
         android:inputType="text"
         android:enabled="true"
         android:importantForAutofill="no"
+        android:maxLength="15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/new_todo_text_what"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
+        android:backgroundTint="@android:color/white"
         android:importantForAutofill="no"
         app:layout_constraintStart_toEndOf="@+id/new_todo_text_deadline"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
@@ -81,7 +82,8 @@
         android:layout_marginStart="10dp"
         android:shadowColor="@android:color/holo_green_light"
         android:importantForAutofill="no"
-        app:layout_constraintEnd_toEndOf="@+id/new_todo_edittext_what"
+        android:backgroundTint="@android:color/white"
+    app:layout_constraintEnd_toEndOf="@+id/new_todo_edittext_what"
         app:layout_constraintStart_toEndOf="@+id/new_todo_Button_deadline_date"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
 
@@ -114,6 +116,7 @@
         android:layout_marginTop="8dp"
         android:padding="0dp"
         android:numStars="5"
+        android:stepSize="1"
         android:importantForAutofill="no"
         app:layout_constraintStart_toEndOf="@+id/new_todo_text_priority"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_numberpicker_time_expenditure" />

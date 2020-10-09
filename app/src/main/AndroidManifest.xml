@@ -3,6 +3,7 @@
     package="ch.ost.rj.mge.mind_supporter">
 
     <application
+        android:name="ch.ost.rj.mge.mind_supporter.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

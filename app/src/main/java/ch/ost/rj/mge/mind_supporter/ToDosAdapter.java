@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,20 +34,27 @@ public class ToDosAdapter extends RecyclerView.Adapter {
         View view = inflater.inflate(R.layout.to_do_list_item_layout,parent,false);
 
         TextView title = view.findViewById(R.id.title);
-        TextView finishStatus = view.findViewById(R.id.finish_status);
+        ImageView image = view.findViewById(R.id.image);
         TextView finishDate = view.findViewById(R.id.finish_date);
 
-        return new ToDosViewHolder(view,title,finishStatus, finishDate);
+        return new ToDosViewHolder(view,title,image, finishDate);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ToDosViewHolder tmp = (ToDosViewHolder) holder;
         ToDo todo = this.toDoArrayList.get(position);
-        tmp.title.setText(toDoArrayList.get(position).getTitle());
-        tmp.finishedStatus.setText(Boolean.toString(toDoArrayList.get(position).isFinished()));
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        if(todo.isFinished()){
+            ((ToDosViewHolder) holder).constraintLayout.setBackgroundResource(R.color.light_green);
+        }else{
+            ((ToDosViewHolder) holder).constraintLayout.setBackgroundResource(R.color.light_red);
+        }
+
+        tmp.title.setText(toDoArrayList.get(position).getTitle());
+        tmp.image.setImageBitmap(toDoArrayList.get(position).getImage());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         tmp.finishDate.setText(toDoArrayList.get(position).getDueDateTime().format(formatter));
     }
 
