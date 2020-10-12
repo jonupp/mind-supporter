@@ -70,6 +70,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@android:color/white"
+        android:textColor="@android:color/black"
         android:importantForAutofill="no"
         app:layout_constraintStart_toEndOf="@+id/new_todo_text_deadline"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
@@ -83,7 +84,8 @@
         android:shadowColor="@android:color/holo_green_light"
         android:importantForAutofill="no"
         android:backgroundTint="@android:color/white"
-    app:layout_constraintEnd_toEndOf="@+id/new_todo_edittext_what"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_edittext_what"
         app:layout_constraintStart_toEndOf="@+id/new_todo_Button_deadline_date"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
 
@@ -104,7 +106,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:prompt="@string/app_name"
-        app:layout_constraintStart_toEndOf="@id/new_todo_numberpicker_time_expenditure"
+        android:popupBackground="@android:color/white"
+    app:layout_constraintStart_toEndOf="@id/new_todo_numberpicker_time_expenditure"
         app:layout_constraintBottom_toBottomOf="@+id/new_todo_numberpicker_time_expenditure"
         app:layout_constraintTop_toTopOf="@+id/new_todo_numberpicker_time_expenditure"
         />

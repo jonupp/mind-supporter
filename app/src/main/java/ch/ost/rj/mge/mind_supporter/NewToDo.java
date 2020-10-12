@@ -73,7 +73,7 @@ public class NewToDo extends AppCompatActivity {
         pickDateButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(context,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         pickDateButton.setText(dayOfMonth + "." + month + "." + year);
