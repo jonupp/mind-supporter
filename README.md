@@ -6,6 +6,6 @@ Die App erfasst zu erledigende Aufträge und erinnert mittels Notifications fall
 * Kalenderansicht (2) oder falls nicht möglich: Lokalisierung (2)
 * Persistenz der Tasks (2)
 * Notification (2)
-* Kamera um Fotos in Task einzubinden (2)
+* Galerie um Fotos in Task einzubinden (2)
 * Widget mit nächstem fälligen Task (2)
 * **Total (15)**
