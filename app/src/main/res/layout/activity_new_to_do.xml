@@ -20,12 +20,12 @@
         android:id="@+id/new_todo_text_deadline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:labelFor="@id/new_todo_Button_deadline_date"
+        android:labelFor="@id/new_todo_button_deadline_date"
         android:text="@string/new_todo_deadline"
         app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
         app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
-        app:layout_constraintBottom_toBottomOf="@+id/new_todo_Button_deadline_date"
-        app:layout_constraintTop_toTopOf="@+id/new_todo_Button_deadline_date" />
+        app:layout_constraintBottom_toBottomOf="@+id/new_todo_button_deadline_date"
+        app:layout_constraintTop_toTopOf="@+id/new_todo_button_deadline_date" />
 
     <TextView
         android:id="@+id/new_todo_text_time_expenditure"
@@ -43,11 +43,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:labelFor="@id/new_todo_ratingbar_priority"
-        android:text="@string/new_todo_priority"
+        android:text="@string/status"
         app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
         app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
         app:layout_constraintTop_toTopOf="@+id/new_todo_ratingbar_priority"
         app:layout_constraintBottom_toBottomOf="@+id/new_todo_ratingbar_priority" />
+
+    <TextView
+        android:id="@+id/new_todo_text_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/new_todo_ratingbar_priority"
+        android:text="@string/status"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
+        app:layout_constraintTop_toTopOf="@+id/new_todo_toggle_done"
+        app:layout_constraintBottom_toBottomOf="@+id/new_todo_toggle_done" />
 
     <EditText
         android:id="@+id/new_todo_edittext_what"
@@ -59,24 +70,26 @@
         android:inputType="text"
         android:enabled="true"
         android:importantForAutofill="no"
-        android:maxLength="15"
+        android:maxLength="20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/new_todo_text_what"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/new_todo_Button_deadline_date"
+        android:id="@+id/new_todo_button_deadline_date"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="50dp"
         android:backgroundTint="@android:color/white"
         android:textColor="@android:color/black"
+        android:text="@string/date"
         android:importantForAutofill="no"
         app:layout_constraintStart_toEndOf="@+id/new_todo_text_deadline"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
 
     <Button
-        android:id="@+id/new_todo_Button_deadline_time"
+        android:id="@+id/new_todo_button_deadline_time"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -85,8 +98,9 @@
         android:importantForAutofill="no"
         android:backgroundTint="@android:color/white"
         android:textColor="@android:color/black"
+        android:text="@string/time"
         app:layout_constraintEnd_toEndOf="@+id/new_todo_edittext_what"
-        app:layout_constraintStart_toEndOf="@+id/new_todo_Button_deadline_date"
+        app:layout_constraintStart_toEndOf="@+id/new_todo_button_deadline_date"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
 
     <NumberPicker
@@ -98,7 +112,7 @@
 
         android:importantForAutofill="no"
         app:layout_constraintStart_toStartOf="@+id/new_todo_edittext_what"
-        app:layout_constraintTop_toBottomOf="@+id/new_todo_Button_deadline_date" />
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_button_deadline_date" />
 
     <Spinner
         android:id="@+id/new_todo_spinner_timeunits"
@@ -107,7 +121,7 @@
         android:layout_marginStart="20dp"
         android:prompt="@string/app_name"
         android:popupBackground="@android:color/white"
-    app:layout_constraintStart_toEndOf="@id/new_todo_numberpicker_time_expenditure"
+        app:layout_constraintStart_toEndOf="@id/new_todo_numberpicker_time_expenditure"
         app:layout_constraintBottom_toBottomOf="@+id/new_todo_numberpicker_time_expenditure"
         app:layout_constraintTop_toTopOf="@+id/new_todo_numberpicker_time_expenditure"
         />
@@ -133,23 +147,37 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:gravity="start|top"
+        android:maxLength="1000"
         android:hint="@string/new_todo_your_note"
         android:inputType="textMultiLine|textAutoComplete|textAutoCorrect"
         android:importantForAutofill="no"
-        app:layout_constraintBottom_toTopOf="@+id/floating_action_button_transact"
+        app:layout_constraintBottom_toTopOf="@+id/new_todo_toggle_done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_ratingbar_priority" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-
+    <!--oder auf SwitchCompat wechseln-->
+    <!--android:background="@drawable/toggle_button" ==> lässt App abstürzen-->
+    <androidx.appcompat.widget.AppCompatToggleButton
+        android:id="@+id/new_todo_toggle_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:textOff="@string/undone"
+        android:textOn="@string/done"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintStart_toStartOf="@id/new_todo_edittext_what"
+        app:layout_constraintTop_toBottomOf="@id/new_todo_edittext_note"
+        app:layout_constraintBottom_toTopOf="@id/floating_action_button_transact"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_pick_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="#2196F3"
         android:clickable="true"
         android:tint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/floating_action_button_transact"
         app:layout_constraintStart_toStartOf="@id/new_todo_text_what"
         app:srcCompat="@android:drawable/ic_menu_upload" />
 

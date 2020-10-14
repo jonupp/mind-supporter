@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -22,9 +24,16 @@ import java.util.Date;
 
 public class NewToDo extends AppCompatActivity {
 
+    private static final int PICK_IMAGE = 1;
+
     private void abortNewToDo(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+    }
+    private void pickPictureFromLibrary(){
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,13 @@ public class NewToDo extends AppCompatActivity {
                 abortNewToDo();
             }
         });
+        final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
+        pickPicture.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                pickPictureFromLibrary();
+            }
+        });
 
         final Context context = this;
         Calendar calendar = Calendar.getInstance();
@@ -56,7 +72,7 @@ public class NewToDo extends AppCompatActivity {
         final int year  = calendar.get(Calendar.YEAR);
         final int hour  = calendar.get(Calendar.HOUR_OF_DAY);
         final int minute  = calendar.get(Calendar.MINUTE);
-        final Button pickTimeButton = (Button) findViewById(R.id.new_todo_Button_deadline_time);
+        final Button pickTimeButton = (Button) findViewById(R.id.new_todo_button_deadline_time);
         pickTimeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -69,7 +85,7 @@ public class NewToDo extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
-        final Button pickDateButton = (Button) findViewById(R.id.new_todo_Button_deadline_date);
+        final Button pickDateButton = (Button) findViewById(R.id.new_todo_button_deadline_date);
         pickDateButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -83,7 +99,19 @@ public class NewToDo extends AppCompatActivity {
             }
         });
 
+/* ToDo:
 
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.new_todo_toggle_done);
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                } else {
+                    // The toggle is disabled
+                }
+            }
+        });
+*/
 
     }
 }

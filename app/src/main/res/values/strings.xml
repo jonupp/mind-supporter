@@ -12,6 +12,12 @@
     <string name="new_todo_your_note">put your notes here…</string>
     <string name="new_todo_upload_picture">Upload Picture</string>
     <string name="image_view_content_description">ToDo Image</string>
+    <string name="date">date</string>
+    <string name="time">time</string>
+    <string name="open">open</string>
+    <string name="done">done</string>
+    <string name="status">Status</string>
+    <string name="undone">undone</string>
     <string-array name="time_units">
         <item>minutes</item>
         <item>hours</item>

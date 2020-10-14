@@ -2,9 +2,11 @@ package ch.ost.rj.mge.mind_supporter;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
     //Jonas = ToDoList Activity
-public class ToDo {
+// @Entity
+public class ToDo implements Serializable {
 
     private String title;
     private LocalDateTime dueDateTime;
