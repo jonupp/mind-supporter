@@ -1,5 +1,7 @@
 package ch.ost.rj.mge.mind_supporter;
 
+import android.graphics.Bitmap;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -29,7 +31,7 @@ public class ToDoStorage {
     static{
         toDoArrayList = new ArrayList<ToDo>();
 
-        ToDo test1 = new ToDo("Shopping",LocalDateTime.now(),100,1,false, null, "");
+        ToDo test1 = new ToDo("Shopping",LocalDateTime.now(),100,1,true, null, "");
         ToDo test2 = new ToDo("Learning", LocalDateTime.now(), 60, 2, false, null, "");
         ToDo test3 = new ToDo("Football", LocalDateTime.now(), 60, 2, true, null, "");
 
@@ -49,4 +51,9 @@ public class ToDoStorage {
     public static void setToDoArrayList(ArrayList<ToDo> toDoArrayList) {
         ToDoStorage.toDoArrayList = toDoArrayList;
     }
+
+    public static void addToToDoArrayList(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Bitmap image, String note){
+        toDoArrayList.add(new ToDo(title, dueDateTime, durationMinutes, priority, finished, image, note));
+    }
+
 }

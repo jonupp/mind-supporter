@@ -6,65 +6,157 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.ToggleButton;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 
 public class NewToDo extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
+    String title, timeunit ,note;
+    int deadlineYear, deadlineMonth, deadlineDay, deadlineHour, deadlineMinute, expenditure, priority;
+    boolean status;
+    Bitmap image;
 
-    private void abortNewToDo(){
+    private void reaction(String note){
+        Toast.makeText(NewToDo.this, note, Toast.LENGTH_LONG).show();
+    }
+
+    private LocalDateTime createDateTime(){
+        String dateTime = deadlineYear + "-";
+        if (deadlineMonth < 10) {
+            dateTime += "0"+ deadlineMonth+"-";
+        } else{dateTime += deadlineMonth+"-";}
+        if (deadlineDay < 10) {
+            dateTime += "0"+ deadlineDay + " ";
+        } else{dateTime += deadlineDay + " ";}
+        if (deadlineHour < 10) {
+            dateTime += "0"+ deadlineHour + ":";
+        } else{dateTime += deadlineHour + ":";}
+        if (deadlineDay < 10) {
+            dateTime += "0"+ deadlineMinute;
+        } else{dateTime += deadlineMinute;}
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        return LocalDateTime.parse(dateTime, formatter);
+    }
+
+    private void showAllToDos(){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+    private void getImageFromLibrary(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
-    private void pickPictureFromLibrary(){
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
 
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                image = BitmapFactory.decodeStream(imageStream);
+                ImageView imageView = findViewById(R.id.new_todo_image);
+                imageView.setImageBitmap(image);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        }
     }
+    private void saveToDo(){
+        //get Title
+        EditText et = (EditText)findViewById(R.id.new_todo_edittext_title);
+        title = et.getText().toString();
+        if (title.isEmpty()){reaction("Title is not defined"); return;}
+        if (deadlineYear == 0 || deadlineMonth == 0 || deadlineDay == 0){reaction("Deadline Date is not defined"); return;}
+        //get Priority
+        RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
+        priority = ratingBar.getNumStars();
+        //get Note
+        EditText editTextNote = findViewById(R.id.new_todo_edittext_note);
+        note = editTextNote.getText().toString();
+        switch (timeunit){
+            case "hours": expenditure *= 60;break;
+            case "days": expenditure *= 60*24;break;
+        }
+        ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, image, note);
+        showAllToDos();
+    }
+
+    public void onGroupItemClick(MenuItem item, ArrayAdapter<CharSequence> adapter) {
+        switch(item.getItemId()){
+            case R.id.show_pending:
+                break;
+            case R.id.show_finished:
+                break;
+            case R.id.show_all:
+                break;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_to_do);
-
-        Spinner spinner = (Spinner) findViewById(R.id.new_todo_spinner_timeunits);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.time_units, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
 
 
         FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
         abortBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                abortNewToDo();
+                showAllToDos();
             }
         });
+
         final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
         pickPicture.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                pickPictureFromLibrary();
+                getImageFromLibrary();
+            }
+        });
+        //save inputs as newToDo
+        FloatingActionButton saveToDo = findViewById(R.id.floating_action_button_transact);
+        saveToDo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveToDo();
             }
         });
 
+        //get Deadline
         final Context context = this;
         Calendar calendar = Calendar.getInstance();
         final int day  = calendar.get(Calendar.DAY_OF_MONTH);
@@ -79,6 +171,8 @@ public class NewToDo extends AppCompatActivity {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        deadlineHour = hourOfDay;
+                        deadlineMinute = minute;
                         pickTimeButton.setText(hourOfDay + ":" + minute);
                     }
                 },hour, minute, android.text.format.DateFormat.is24HourFormat(context));
@@ -92,6 +186,9 @@ public class NewToDo extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(context,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        deadlineYear = year;
+                        deadlineMonth = month;
+                        deadlineDay = dayOfMonth;
                         pickDateButton.setText(dayOfMonth + "." + month + "." + year);
                     }
                 }, year, month, day);
@@ -99,19 +196,35 @@ public class NewToDo extends AppCompatActivity {
             }
         });
 
-/* ToDo:
-
-        ToggleButton toggle = (ToggleButton) findViewById(R.id.new_todo_toggle_done);
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                } else {
-                    // The toggle is disabled
+        //get Expenditure
+        NumberPicker numberPicker = findViewById(R.id.new_todo_numberpicker_time_expenditure);
+        if (numberPicker != null) {
+            numberPicker.setMinValue(0);
+            numberPicker.setMaxValue(100);
+            numberPicker.setWrapSelectorWheel(true);
+            numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                @Override
+                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                    expenditure = newVal;
                 }
+            });
+        }
+        Spinner timeSpinner = (Spinner) findViewById(R.id.new_todo_spinner_timeunits);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.time_units, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeSpinner.setAdapter(adapter);
+        timeunit = timeSpinner.getSelectedItem().toString();
+
+        //get Status
+        CheckBox checkBox = findViewById(R.id.new_todo_checkbox_status);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                status = isChecked;
             }
         });
-*/
+
 
     }
 }

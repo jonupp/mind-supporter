@@ -7,13 +7,13 @@
     tools:context=".NewToDo">
 
     <TextView
-        android:id="@+id/new_todo_text_what"
+        android:id="@+id/new_todo_text_title"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/new_todo_activity"
-        android:labelFor="@id/new_todo_edittext_what"
-        app:layout_constraintBaseline_toBaselineOf="@+id/new_todo_edittext_what"
+        android:labelFor="@id/new_todo_edittext_title"
+        app:layout_constraintBaseline_toBaselineOf="@+id/new_todo_edittext_title"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:labelFor="@id/new_todo_button_deadline_date"
         android:text="@string/new_todo_deadline"
-        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
-        app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_title"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_text_title"
         app:layout_constraintBottom_toBottomOf="@+id/new_todo_button_deadline_date"
         app:layout_constraintTop_toTopOf="@+id/new_todo_button_deadline_date" />
 
@@ -33,8 +33,8 @@
         android:layout_height="wrap_content"
         android:labelFor="@id/new_todo_numberpicker_time_expenditure"
         android:text="@string/new_todo_time_expenditure"
-        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
-        app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_title"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_text_title"
         app:layout_constraintBottom_toBottomOf="@id/new_todo_numberpicker_time_expenditure"
         app:layout_constraintTop_toTopOf="@id/new_todo_numberpicker_time_expenditure"/>
 
@@ -43,9 +43,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:labelFor="@id/new_todo_ratingbar_priority"
-        android:text="@string/status"
-        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
-        app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
+        android:text="@string/new_todo_priority"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_title"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_text_title"
         app:layout_constraintTop_toTopOf="@+id/new_todo_ratingbar_priority"
         app:layout_constraintBottom_toBottomOf="@+id/new_todo_ratingbar_priority" />
 
@@ -55,13 +55,13 @@
         android:layout_height="wrap_content"
         android:labelFor="@id/new_todo_ratingbar_priority"
         android:text="@string/status"
-        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_what"
-        app:layout_constraintStart_toStartOf="@+id/new_todo_text_what"
-        app:layout_constraintTop_toTopOf="@+id/new_todo_toggle_done"
-        app:layout_constraintBottom_toBottomOf="@+id/new_todo_toggle_done" />
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_text_title"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_text_title"
+        app:layout_constraintTop_toTopOf="@+id/new_todo_checkbox_status"
+        app:layout_constraintBottom_toBottomOf="@+id/new_todo_checkbox_status" />
 
     <EditText
-        android:id="@+id/new_todo_edittext_what"
+        android:id="@+id/new_todo_edittext_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -72,7 +72,7 @@
         android:importantForAutofill="no"
         android:maxLength="20"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/new_todo_text_what"
+        app:layout_constraintStart_toEndOf="@+id/new_todo_text_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -86,7 +86,7 @@
         android:text="@string/date"
         android:importantForAutofill="no"
         app:layout_constraintStart_toEndOf="@+id/new_todo_text_deadline"
-        app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_title" />
 
     <Button
         android:id="@+id/new_todo_button_deadline_time"
@@ -99,9 +99,9 @@
         android:backgroundTint="@android:color/white"
         android:textColor="@android:color/black"
         android:text="@string/time"
-        app:layout_constraintEnd_toEndOf="@+id/new_todo_edittext_what"
+        app:layout_constraintEnd_toEndOf="@+id/new_todo_edittext_title"
         app:layout_constraintStart_toEndOf="@+id/new_todo_button_deadline_date"
-        app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_what" />
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_title" />
 
     <NumberPicker
         android:id="@+id/new_todo_numberpicker_time_expenditure"
@@ -109,9 +109,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:layout_marginStart="20dp"
-
         android:importantForAutofill="no"
-        app:layout_constraintStart_toStartOf="@+id/new_todo_edittext_what"
+        app:layout_constraintStart_toStartOf="@+id/new_todo_edittext_title"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_button_deadline_date" />
 
     <Spinner
@@ -151,21 +150,31 @@
         android:hint="@string/new_todo_your_note"
         android:inputType="textMultiLine|textAutoComplete|textAutoCorrect"
         android:importantForAutofill="no"
-        app:layout_constraintBottom_toTopOf="@+id/new_todo_toggle_done"
+        app:layout_constraintBottom_toTopOf="@+id/new_todo_checkbox_status"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_ratingbar_priority" />
 
+
+    <ImageView
+        android:id="@+id/new_todo_image"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:contentDescription="@string/image_view_content_description"
+        android:src="@drawable/image_placeholder"
+        app:layout_constraintBottom_toBottomOf="@id/new_todo_checkbox_status"
+        app:layout_constraintEnd_toEndOf="@id/floating_action_button_transact"
+        />
     <!--oder auf SwitchCompat wechseln-->
-    <!--android:background="@drawable/toggle_button" ==> lässt App abstürzen-->
-    <androidx.appcompat.widget.AppCompatToggleButton
-        android:id="@+id/new_todo_toggle_done"
+    <!--android:background="@drawable/checkbox" ==> lässt App abstürzen-->
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/new_todo_checkbox_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOff="@string/undone"
         android:textOn="@string/done"
         android:layout_marginBottom="20dp"
-        app:layout_constraintStart_toStartOf="@id/new_todo_edittext_what"
+        app:layout_constraintStart_toStartOf="@id/new_todo_edittext_title"
         app:layout_constraintTop_toBottomOf="@id/new_todo_edittext_note"
         app:layout_constraintBottom_toTopOf="@id/floating_action_button_transact"
         />
@@ -178,7 +187,7 @@
         android:clickable="true"
         android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@id/floating_action_button_transact"
-        app:layout_constraintStart_toStartOf="@id/new_todo_text_what"
+        app:layout_constraintStart_toStartOf="@id/new_todo_text_title"
         app:srcCompat="@android:drawable/ic_menu_upload" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
