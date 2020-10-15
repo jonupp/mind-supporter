@@ -1,11 +1,11 @@
 package ch.ost.rj.mge.mind_supporter;
 
-import android.graphics.Bitmap;
+
+import android.net.Uri;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-    //Jonas = ToDoList Activity
-// @Entity
+
 public class ToDo implements Serializable {
 
     private String title;
@@ -13,12 +13,12 @@ public class ToDo implements Serializable {
     private int durationMinutes;
     private int priority;
     private boolean finished;
-    private Bitmap image;
+    private Uri image;
     private String note;
 
 
 
-    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Bitmap image, String note){
+    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Uri image, String note){
         this.title=title;
         this.dueDateTime=dueDateTime;
         this.durationMinutes=durationMinutes;
@@ -71,11 +71,11 @@ public class ToDo implements Serializable {
         this.finished = finished;
     }
 
-    public Bitmap getImage() {
+    public Uri getImage() {
         return image;
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(Uri image) {
         this.image = image;
     }
 
