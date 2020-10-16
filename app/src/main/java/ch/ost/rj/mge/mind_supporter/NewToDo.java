@@ -36,45 +36,55 @@ import java.util.Calendar;
 public class NewToDo extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
-    String title, timeunit ,note;
+    String title, timeunit, note;
     int deadlineYear, deadlineMonth, deadlineDay, deadlineHour, deadlineMinute, expenditure, priority;
     boolean status;
     Bitmap image;
 
-    private void reaction(String note){
-        Toast.makeText(NewToDo.this, note, Toast.LENGTH_LONG).show();
+    private void reaction(String note) {
+        Toast.makeText(NewToDo.this, note, Toast.LENGTH_SHORT).show();
     }
 
-    private LocalDateTime createDateTime(){
+    private LocalDateTime createDateTime() {
         String dateTime = deadlineYear + "-";
         if (deadlineMonth < 10) {
-            dateTime += "0"+ deadlineMonth+"-";
-        } else{dateTime += deadlineMonth+"-";}
+            dateTime += "0" + deadlineMonth + "-";
+        } else {
+            dateTime += deadlineMonth + "-";
+        }
         if (deadlineDay < 10) {
-            dateTime += "0"+ deadlineDay + " ";
-        } else{dateTime += deadlineDay + " ";}
+            dateTime += "0" + deadlineDay + " ";
+        } else {
+            dateTime += deadlineDay + " ";
+        }
         if (deadlineHour < 10) {
-            dateTime += "0"+ deadlineHour + ":";
-        } else{dateTime += deadlineHour + ":";}
+            dateTime += "0" + deadlineHour + ":";
+        } else {
+            dateTime += deadlineHour + ":";
+        }
         if (deadlineDay < 10) {
-            dateTime += "0"+ deadlineMinute;
-        } else{dateTime += deadlineMinute;}
+            dateTime += "0" + deadlineMinute;
+        } else {
+            dateTime += deadlineMinute;
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return LocalDateTime.parse(dateTime, formatter);
     }
 
-    private void showAllToDos(){
+    private void showAllToDos() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
-    private void getImageFromLibrary(){
+
+    private void getImageFromLibrary() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
+
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
@@ -91,39 +101,39 @@ public class NewToDo extends AppCompatActivity {
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
 
-        }else {
-            Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }
-    private void saveToDo(){
+
+    private void saveToDo() {
         //get Title
-        EditText et = (EditText)findViewById(R.id.new_todo_edittext_title);
+        EditText et = (EditText) findViewById(R.id.new_todo_edittext_title);
         title = et.getText().toString();
-        if (title.isEmpty()){reaction("Title is not defined"); return;}
-        if (deadlineYear == 0 || deadlineMonth == 0 || deadlineDay == 0){reaction("Deadline Date is not defined"); return;}
+        if (title.isEmpty()) {
+            reaction("Title is not defined");
+            return;
+        }
+        if (deadlineYear == 0 || deadlineMonth == 0 || deadlineDay == 0) {
+            reaction("Deadline Date is not defined");
+            return;
+        }
         //get Priority
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
         priority = ratingBar.getNumStars();
         //get Note
         EditText editTextNote = findViewById(R.id.new_todo_edittext_note);
         note = editTextNote.getText().toString();
-        switch (timeunit){
-            case "hours": expenditure *= 60;break;
-            case "days": expenditure *= 60*24;break;
+        switch (timeunit) {
+            case "hours":
+                expenditure *= 60;
+                break;
+            case "days":
+                expenditure *= 60 * 24;
+                break;
         }
         ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, image, note);
         showAllToDos();
-    }
-
-    public void onGroupItemClick(MenuItem item, ArrayAdapter<CharSequence> adapter) {
-        switch(item.getItemId()){
-            case R.id.show_pending:
-                break;
-            case R.id.show_finished:
-                break;
-            case R.id.show_all:
-                break;
-        }
     }
 
     @Override
@@ -133,17 +143,17 @@ public class NewToDo extends AppCompatActivity {
 
 
         FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
-        abortBtn.setOnClickListener(new View.OnClickListener(){
+        abortBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 showAllToDos();
             }
         });
 
         final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
-        pickPicture.setOnClickListener(new View.OnClickListener(){
+        pickPicture.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 getImageFromLibrary();
             }
         });
@@ -159,15 +169,15 @@ public class NewToDo extends AppCompatActivity {
         //get Deadline
         final Context context = this;
         Calendar calendar = Calendar.getInstance();
-        final int day  = calendar.get(Calendar.DAY_OF_MONTH);
-        final int month  = calendar.get(Calendar.MONTH);
-        final int year  = calendar.get(Calendar.YEAR);
-        final int hour  = calendar.get(Calendar.HOUR_OF_DAY);
-        final int minute  = calendar.get(Calendar.MINUTE);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        final int month = calendar.get(Calendar.MONTH);
+        final int year = calendar.get(Calendar.YEAR);
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar.get(Calendar.MINUTE);
         final Button pickTimeButton = (Button) findViewById(R.id.new_todo_button_deadline_time);
-        pickTimeButton.setOnClickListener(new View.OnClickListener(){
+        pickTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -175,15 +185,15 @@ public class NewToDo extends AppCompatActivity {
                         deadlineMinute = minute;
                         pickTimeButton.setText(hourOfDay + ":" + minute);
                     }
-                },hour, minute, android.text.format.DateFormat.is24HourFormat(context));
+                }, hour, minute, android.text.format.DateFormat.is24HourFormat(context));
                 timePickerDialog.show();
             }
         });
         final Button pickDateButton = (Button) findViewById(R.id.new_todo_button_deadline_date);
-        pickDateButton.setOnClickListener(new View.OnClickListener(){
+        pickDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                DatePickerDialog datePickerDialog = new DatePickerDialog(context,new DatePickerDialog.OnDateSetListener() {
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         deadlineYear = year;
