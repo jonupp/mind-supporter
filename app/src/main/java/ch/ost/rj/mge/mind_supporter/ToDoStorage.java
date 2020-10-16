@@ -1,10 +1,8 @@
 package ch.ost.rj.mge.mind_supporter;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,7 +24,7 @@ public class ToDoStorage {
     public static void replaceToDoArrayListWithPersistedToDoArrayList() throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream("todos");
         ObjectInputStream ois = new ObjectInputStream(fis);
-        toDoArrayList = (ArrayList) ois.readObject();
+        toDoArrayList = (ArrayList<ToDo>) ois.readObject();
         ois.close();
         fis.close();
     }
@@ -52,7 +50,14 @@ public class ToDoStorage {
     }
 
     static{
-        toDoArrayList = new ArrayList<ToDo>();
+        toDoArrayList = new ArrayList<>();
+        try {
+            ToDoStorage.replaceToDoArrayListWithPersistedToDoArrayList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         ToDo test1 = new ToDo("Shopping",LocalDateTime.now(),100,1,true, null, "");
         ToDo test2 = new ToDo("Learning", LocalDateTime.now(), 60, 2, false, null, "");
@@ -78,5 +83,4 @@ public class ToDoStorage {
     public static void addToToDoArrayList(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Uri image, String note){
         toDoArrayList.add(new ToDo(title, dueDateTime, durationMinutes, priority, finished, image, note));
     }
-
 }

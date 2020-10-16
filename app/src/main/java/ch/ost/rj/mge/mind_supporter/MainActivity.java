@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
     public void onGroupItemClick(MenuItem item) {
     switch(item.getItemId()){
         case R.id.show_pending:
-            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getFinished());
+            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getPending());
             break;
         case R.id.show_finished:
-            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getPending());
+            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getFinished());
             break;
         case R.id.show_all:
             ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getToDoArrayList());
