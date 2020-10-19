@@ -5,6 +5,6 @@
     <color name="colorAccent">#1b0000</color>
     <color name="colorRecyclerItemTextColor">#000000</color>
     <color name="colorBackground">#FFFFFF</color>
-    <color name="light_green">#D7FFAF</color>
-    <color name="light_red">#FFAFAF</color>
+    <color name="light_green">#4BD7FFAF</color>
+    <color name="light_red">#59FFAFAF</color>
 </resources>
