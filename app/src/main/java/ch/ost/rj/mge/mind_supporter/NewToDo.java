@@ -128,8 +128,8 @@ public class NewToDo extends AppCompatActivity {
                 expenditure *= 60 * 24;
                 break;
         }
-        ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, imageUri, note);
-        showAllToDos();
+
+        ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, imageUri.toString(), note);
     }
 
     @Override

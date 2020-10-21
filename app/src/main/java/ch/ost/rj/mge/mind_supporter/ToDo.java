@@ -1,8 +1,6 @@
 package ch.ost.rj.mge.mind_supporter;
 
 
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -13,12 +11,12 @@ public class ToDo implements Serializable {
     private int durationMinutes;
     private int priority;
     private boolean finished;
-    private Uri image;
+    private String image;
     private String note;
 
 
 
-    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Uri image, String note){
+    public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, String image, String note){
         this.title=title;
         this.dueDateTime=dueDateTime;
         this.durationMinutes=durationMinutes;
@@ -71,11 +69,11 @@ public class ToDo implements Serializable {
         this.finished = finished;
     }
 
-    public Uri getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Uri image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
