@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -32,10 +33,10 @@ import java.util.Calendar;
 public class NewToDo extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
-    String title, timeunit, note;
+    String title, timeUnit, note;
     int deadlineYear, deadlineMonth, deadlineDay, deadlineHour, deadlineMinute, expenditure, priority;
-    boolean status;
-    Uri imageUri;
+    private boolean status;
+    Uri imageUri = Uri.parse("../../res/drawable/image_placeholder.xml");
 
     private void reaction(String note) {
         Toast.makeText(NewToDo.this, note, Toast.LENGTH_SHORT).show();
@@ -89,9 +90,8 @@ public class NewToDo extends AppCompatActivity {
             try {
                 imageUri = data.getData();
                 getContentResolver().openInputStream(imageUri);
-              //  image = BitmapFactory.decodeStream(imageStream);
-              //  ImageView imageView = findViewById(R.id.new_todo_image);
-              //  imageView.setImageBitmap(image);
+                ImageView imageView = findViewById(R.id.new_todo_image);
+                imageView.setImageURI(imageUri);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -120,7 +120,7 @@ public class NewToDo extends AppCompatActivity {
         //get Note
         EditText editTextNote = findViewById(R.id.new_todo_edittext_note);
         note = editTextNote.getText().toString();
-        switch (timeunit) {
+        switch (timeUnit) {
             case "hours":
                 expenditure *= 60;
                 break;
@@ -147,6 +147,7 @@ public class NewToDo extends AppCompatActivity {
             }
         });
 
+        //get Image
         final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
         pickPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +226,7 @@ public class NewToDo extends AppCompatActivity {
                 R.array.time_units, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeSpinner.setAdapter(adapter);
-        timeunit = timeSpinner.getSelectedItem().toString();
+        timeUnit = timeSpinner.getSelectedItem().toString();
 
         //get Status
         CheckBox checkBox = findViewById(R.id.new_todo_checkbox_status);
