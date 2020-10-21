@@ -129,7 +129,6 @@ public class NewToDo extends AppCompatActivity {
                 break;
         }
         ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, imageUri, note);
-        ToDoStorage.persist();
         showAllToDos();
     }
 
@@ -199,7 +198,7 @@ public class NewToDo extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         deadlineYear = year;
-                        deadlineMonth = month;
+                        deadlineMonth = ++month;
                         deadlineDay = dayOfMonth;
                         pickDateButton.setText(dayOfMonth + "." + month + "." + year);
                     }

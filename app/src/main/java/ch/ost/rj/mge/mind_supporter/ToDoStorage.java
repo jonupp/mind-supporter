@@ -71,7 +71,8 @@ public class ToDoStorage {
         ToDoStorage.toDoArrayList = toDoArrayList;
     }
 
-    public static void addToToDoArrayList(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Uri image, String note){
+    public static void addToToDoArrayList(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, Uri image, String note) throws IOException {
         toDoArrayList.add(new ToDo(title, dueDateTime, durationMinutes, priority, finished, image, note));
+        persist();
     }
 }
