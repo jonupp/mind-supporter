@@ -161,7 +161,6 @@
         android:layout_width="112dp"
         android:layout_height="112dp"
         android:contentDescription="@string/image_view_content_description"
-        android:src="@drawable/image_placeholder"
         app:layout_constraintBottom_toBottomOf="@id/new_todo_checkbox_status"
         app:layout_constraintEnd_toEndOf="@id/floating_action_button_transact"
         />
