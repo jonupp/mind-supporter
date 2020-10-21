@@ -6,11 +6,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,7 +15,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -28,7 +24,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -39,7 +35,7 @@ public class NewToDo extends AppCompatActivity {
     String title, timeunit, note;
     int deadlineYear, deadlineMonth, deadlineDay, deadlineHour, deadlineMinute, expenditure, priority;
     boolean status;
-    Bitmap image;
+    Uri imageUri;
 
     private void reaction(String note) {
         Toast.makeText(NewToDo.this, note, Toast.LENGTH_SHORT).show();
@@ -91,11 +87,11 @@ public class NewToDo extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                image = BitmapFactory.decodeStream(imageStream);
-                ImageView imageView = findViewById(R.id.new_todo_image);
-                imageView.setImageBitmap(image);
+                imageUri = data.getData();
+                getContentResolver().openInputStream(imageUri);
+              //  image = BitmapFactory.decodeStream(imageStream);
+              //  ImageView imageView = findViewById(R.id.new_todo_image);
+              //  imageView.setImageBitmap(image);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -106,9 +102,9 @@ public class NewToDo extends AppCompatActivity {
         }
     }
 
-    private void saveToDo() {
+    private void saveToDo() throws IOException {
         //get Title
-        EditText et = (EditText) findViewById(R.id.new_todo_edittext_title);
+        EditText et = findViewById(R.id.new_todo_edittext_title);
         title = et.getText().toString();
         if (title.isEmpty()) {
             reaction("Title is not defined");
@@ -132,7 +128,8 @@ public class NewToDo extends AppCompatActivity {
                 expenditure *= 60 * 24;
                 break;
         }
-        ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, image, note);
+        ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, imageUri, note);
+        ToDoStorage.persist();
         showAllToDos();
     }
 
@@ -162,7 +159,11 @@ public class NewToDo extends AppCompatActivity {
         saveToDo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveToDo();
+                try {
+                    saveToDo();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -174,7 +175,7 @@ public class NewToDo extends AppCompatActivity {
         final int year = calendar.get(Calendar.YEAR);
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         final int minute = calendar.get(Calendar.MINUTE);
-        final Button pickTimeButton = (Button) findViewById(R.id.new_todo_button_deadline_time);
+        final Button pickTimeButton = findViewById(R.id.new_todo_button_deadline_time);
         pickTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,7 +190,7 @@ public class NewToDo extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
-        final Button pickDateButton = (Button) findViewById(R.id.new_todo_button_deadline_date);
+        final Button pickDateButton = findViewById(R.id.new_todo_button_deadline_date);
         pickDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,7 +220,7 @@ public class NewToDo extends AppCompatActivity {
                 }
             });
         }
-        Spinner timeSpinner = (Spinner) findViewById(R.id.new_todo_spinner_timeunits);
+        Spinner timeSpinner = findViewById(R.id.new_todo_spinner_timeunits);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.time_units, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
