@@ -98,7 +98,7 @@ public class NewToDo extends AppCompatActivity {
             }
 
         } else {
-            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You haven't picked an Image", Toast.LENGTH_LONG).show();
         }
     }
 

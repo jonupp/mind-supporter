@@ -2,6 +2,7 @@ package ch.ost.rj.mge.mind_supporter;
 
 import android.net.Uri;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,9 +13,10 @@ import java.util.ArrayList;
 
 public class ToDoStorage {
     private static ArrayList<ToDo> toDoArrayList;
+    public static File persistFile;
 
     public static void persist() throws IOException {
-        FileOutputStream fos = new FileOutputStream("todos");
+        FileOutputStream fos = new FileOutputStream(persistFile);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(toDoArrayList);
         oos.close();
@@ -22,7 +24,7 @@ public class ToDoStorage {
     }
 
     public static void replaceToDoArrayListWithPersistedToDoArrayList() throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream("todos");
+        FileInputStream fis = new FileInputStream(persistFile);
         ObjectInputStream ois = new ObjectInputStream(fis);
         toDoArrayList = (ArrayList<ToDo>) ois.readObject();
         ois.close();
@@ -51,6 +53,7 @@ public class ToDoStorage {
 
     static{
         toDoArrayList = new ArrayList<>();
+        persistFile = new File(App.getContext().getFilesDir(), "todos");
         try {
             ToDoStorage.replaceToDoArrayListWithPersistedToDoArrayList();
         } catch (IOException e) {
