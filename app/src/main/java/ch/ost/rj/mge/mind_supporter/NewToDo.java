@@ -128,7 +128,6 @@ public class NewToDo extends AppCompatActivity {
                 expenditure *= 60 * 24;
                 break;
         }
-
         ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, imageUri.toString(), note);
     }
 
@@ -136,6 +135,8 @@ public class NewToDo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_to_do);
+
+//        Toast.makeText(this, "Title: " + title + "\nDeadline: "+ deadlineYear + deadlineMonth + deadlineDay, Toast.LENGTH_LONG).show();
 
 
         FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
@@ -161,6 +162,8 @@ public class NewToDo extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     saveToDo();
+                    reaction("Deadline Time: " + deadlineHour+":"+deadlineMinute);
+                    showAllToDos();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
