@@ -7,5 +7,4 @@ Die App erfasst zu erledigende Aufträge und erinnert mittels Notifications fall
 * Persistenz der Tasks (2)
 * Galerie um Fotos in Task einzubinden (2)
 * Notification (2)
-* Widget mit nächstem fälligen Task (2)
-* **Total (15)**
+* **Total (13)**
