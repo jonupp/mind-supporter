@@ -73,6 +73,11 @@ public class ToDoStorage {
 
     public static void addToToDoArrayList(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, String image, String note) throws IOException {
         toDoArrayList.add(new ToDo(title, dueDateTime, durationMinutes, priority, finished, image, note));
+        sortDueTime();;
         persist();
+    }
+
+    private static void sortDueTime(){
+        toDoArrayList.sort((a,b)->{return a.getDueDateTime().compareTo(b.getDueDateTime());});
     }
 }
