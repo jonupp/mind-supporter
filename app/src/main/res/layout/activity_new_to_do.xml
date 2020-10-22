@@ -187,7 +187,8 @@
         android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@id/floating_action_button_transact"
         app:layout_constraintStart_toStartOf="@id/new_todo_text_title"
-        app:srcCompat="@android:drawable/ic_menu_upload" />
+        app:srcCompat="@android:drawable/ic_menu_upload"
+        android:contentDescription="@string/pick_picture" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button_transact"
@@ -200,7 +201,8 @@
         android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@android:drawable/ic_menu_save"
+        android:contentDescription="@string/save" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button_abort"
@@ -212,6 +214,7 @@
         android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@id/floating_action_button_transact"
         app:layout_constraintEnd_toStartOf="@id/floating_action_button_transact"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        app:srcCompat="@android:drawable/ic_menu_revert"
+        android:contentDescription="@string/abort" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

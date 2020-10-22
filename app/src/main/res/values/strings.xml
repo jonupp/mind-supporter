@@ -18,6 +18,9 @@
     <string name="done">done</string>
     <string name="status">Status</string>
     <string name="undone">undone</string>
+    <string name="abort">abort ToDo</string>
+    <string name="save">save ToDo</string>
+    <string name="pick_picture">pick Picture from Library</string>
     <string-array name="time_units">
         <item>minutes</item>
         <item>hours</item>

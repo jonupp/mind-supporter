@@ -38,7 +38,7 @@ public class NewToDo extends AppCompatActivity {
     private boolean status;
     Uri imageUri = Uri.parse("../../res/drawable/image_placeholder.xml");
 
-    private void reaction(String note) {
+    private void reactionToast(String note) {
         Toast.makeText(NewToDo.this, note, Toast.LENGTH_SHORT).show();
     }
 
@@ -94,11 +94,11 @@ public class NewToDo extends AppCompatActivity {
                 imageView.setImageURI(imageUri);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                reactionToast("Something went wrong");
             }
 
         } else {
-            Toast.makeText(this, "You haven't picked an Image", Toast.LENGTH_LONG).show();
+            reactionToast("You haven't picked an Image");
         }
     }
 
@@ -107,11 +107,11 @@ public class NewToDo extends AppCompatActivity {
         EditText et = findViewById(R.id.new_todo_edittext_title);
         title = et.getText().toString();
         if (title.isEmpty()) {
-            reaction("Title is not defined");
+            reactionToast("Title is not defined");
             return;
         }
         if (deadlineYear == 0 || deadlineMonth == 0 || deadlineDay == 0) {
-            reaction("Deadline Date is not defined");
+            reactionToast("Deadline Date is not defined");
             return;
         }
         //get Priority
@@ -129,15 +129,13 @@ public class NewToDo extends AppCompatActivity {
                 break;
         }
         ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, imageUri.toString(), note);
+        showAllToDos();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_to_do);
-
-//        Toast.makeText(this, "Title: " + title + "\nDeadline: "+ deadlineYear + deadlineMonth + deadlineDay, Toast.LENGTH_LONG).show();
-
 
         FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
         abortBtn.setOnClickListener(new View.OnClickListener() {
@@ -162,8 +160,6 @@ public class NewToDo extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     saveToDo();
-                    reaction("Deadline Time: " + deadlineHour+":"+deadlineMinute);
-                    showAllToDos();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
