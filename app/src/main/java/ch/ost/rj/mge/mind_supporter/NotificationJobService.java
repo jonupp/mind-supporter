@@ -51,8 +51,8 @@ public class NotificationJobService extends JobService {
                     break;
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) { //No todos found
+            return true;
         }
 
         if(title == null){
@@ -69,7 +69,6 @@ public class NotificationJobService extends JobService {
                 .setContentText("ToDo has to be done: " + title)
                 .setContentIntent(contentPendingIntent)
                 .setSmallIcon(R.drawable.image_placeholder)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setAutoCancel(true);
 
