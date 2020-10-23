@@ -118,7 +118,6 @@ public class ToDosAdapter extends RecyclerView.Adapter {
         tmp.title.setText(toDoArrayList.get(position).getTitle());
 
         if(!toDoArrayList.get(position).getImage().equals("../../res/drawable/image_placeholder.xml")){ //Don't load if URI points to default image (set in XML-Layout)
-            System.out.println("ICH BIN EIN DBUBBER: " + toDoArrayList.get(position).getImage());
             tmp.image.setImageURI(Uri.parse(toDoArrayList.get(position).getImage()));
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
