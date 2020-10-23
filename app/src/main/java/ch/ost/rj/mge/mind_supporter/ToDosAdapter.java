@@ -120,12 +120,9 @@ public class ToDosAdapter extends RecyclerView.Adapter {
         if(!toDoArrayList.get(position).getImage().equals("../../res/drawable/image_placeholder.xml")){ //Don't load if URI points to default image (set in XML-Layout)
             final InputStream imageStream;
             try {
-                //imageStream = App.getContext().getContentResolver().openInputStream(Uri.parse(toDoArrayList.get(position).getImage()));
-                //tmp.image.setImageBitmap(BitmapFactory.decodeStream(imageStream));
-                tmp.image.setImageBitmap(MediaStore.Images.Media.getBitmap(App.getContext().getContentResolver(), Uri.parse(toDoArrayList.get(position).getImage())));
+                imageStream = App.getContext().getContentResolver().openInputStream(Uri.parse(toDoArrayList.get(position).getImage()));
+                tmp.image.setImageBitmap(BitmapFactory.decodeStream(imageStream));
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

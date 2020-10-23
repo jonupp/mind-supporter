@@ -89,7 +89,9 @@ public class NewToDo extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             try {
                 imageUri = data.getData();
+
                 getContentResolver().openInputStream(imageUri);
+
                 ImageView imageView = findViewById(R.id.new_todo_image);
                 imageView.setImageURI(imageUri);
             } catch (FileNotFoundException e) {
