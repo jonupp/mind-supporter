@@ -1,9 +1,12 @@
 package ch.ost.rj.mge.mind_supporter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,9 +25,11 @@ import java.util.ArrayList;
 public class ToDosAdapter extends RecyclerView.Adapter {
     private ArrayList<ToDo> toDoArrayList;
     private RecyclerView recyclerView;
+    private Context mainActivityContext;
 
-    public ToDosAdapter(ArrayList<ToDo> input){
+    public ToDosAdapter(ArrayList<ToDo> input, Context context){
         this.toDoArrayList=input;
+        this.mainActivityContext = context;
     }
 
     public void setAdapterDataBasis(ArrayList<ToDo> in){
@@ -32,7 +38,7 @@ public class ToDosAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView){
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView){
         super.onAttachedToRecyclerView(recyclerView);
         this.recyclerView = recyclerView;
     }
@@ -58,6 +64,39 @@ public class ToDosAdapter extends RecyclerView.Adapter {
             }
         });
 
+
+        view.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Delete todo?");
+                builder.setMessage("Do you really want to delete the selected todo?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int itemPosition = recyclerView.getChildLayoutPosition(view);
+                        ToDo todo =  toDoArrayList.get(itemPosition);
+                        try {
+                            ToDoStorage.removeToDoFromArrayList(todo);
+                            ToDosAdapter.this.notifyDataSetChanged();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return false;
+            }
+        });
+
         TextView title = view.findViewById(R.id.title);
         ImageView image = view.findViewById(R.id.image);
         TextView finishDate = view.findViewById(R.id.finish_date);
@@ -78,14 +117,18 @@ public class ToDosAdapter extends RecyclerView.Adapter {
 
         tmp.title.setText(toDoArrayList.get(position).getTitle());
 
-        final InputStream imageStream;
-        try {
-            imageStream = App.getContext().getContentResolver().openInputStream(Uri.parse(toDoArrayList.get(position).getImage()));
-            tmp.image.setImageBitmap(BitmapFactory.decodeStream(imageStream));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if(!toDoArrayList.get(position).getImage().equals("../../res/drawable/image_placeholder.xml")){ //Don't load if URI points to default image (set in XML-Layout)
+            final InputStream imageStream;
+            try {
+                //imageStream = App.getContext().getContentResolver().openInputStream(Uri.parse(toDoArrayList.get(position).getImage()));
+                //tmp.image.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                tmp.image.setImageBitmap(MediaStore.Images.Media.getBitmap(App.getContext().getContentResolver(), Uri.parse(toDoArrayList.get(position).getImage())));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         tmp.finishDate.setText(toDoArrayList.get(position).getDueDateTime().format(formatter));
     }

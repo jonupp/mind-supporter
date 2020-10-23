@@ -77,6 +77,12 @@ public class ToDoStorage {
         persist();
     }
 
+    public static void removeToDoFromArrayList(ToDo todelete) throws IOException {
+        toDoArrayList.remove(todelete);
+        sortDueTime();
+        persist();
+    }
+
     private static void sortDueTime(){
         toDoArrayList.sort((a,b)->{return a.getDueDateTime().compareTo(b.getDueDateTime());});
     }
