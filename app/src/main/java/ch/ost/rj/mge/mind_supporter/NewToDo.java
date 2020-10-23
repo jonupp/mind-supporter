@@ -1,13 +1,16 @@
 package ch.ost.rj.mge.mind_supporter;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -80,30 +83,34 @@ public class NewToDo extends AppCompatActivity {
 
     private void getImageFromLibrary() {
         Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setDataAndType(MediaStore.Images.Media.INTERNAL_CONTENT_URI,"image/*");
+        intent.setAction(Intent. ACTION_OPEN_DOCUMENT );
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+
+
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
     @Override
-    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != RESULT_OK){
+            reactionToast("You haven't picked an Image");
+            return;
+        }
 
-        if (resultCode == RESULT_OK) {
-            try {
-                imageUri = data.getData();
-
-                getContentResolver().openInputStream(imageUri);
-
+        if (requestCode == PICK_IMAGE) {
+            Uri uri = data.getData();
+            if (uri != null) {
+                final int takeFlags = data.getFlags()&(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                this.getContentResolver().takePersistableUriPermission(uri, takeFlags);
                 ImageView imageView = findViewById(R.id.new_todo_image);
-                imageView.setImageURI(imageUri);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                imageUri = data.getData();
+                imageView.setImageURI(uri);
+            }else{
                 reactionToast("Something went wrong");
             }
-
-        } else {
-            reactionToast("You haven't picked an Image");
         }
     }
 
@@ -143,7 +150,7 @@ public class NewToDo extends AppCompatActivity {
         CheckBox cb = findViewById(R.id.new_todo_checkbox_status);
         cb.setActivated(currentToDo.isFinished());
         //set Image
-        ImageView image = findViewById(R.id.floating_action_button_pick_picture);
+        ImageView image = findViewById(R.id.new_todo_image);
         image.setImageURI(Uri.parse(currentToDo.getImage()));
     }
 
@@ -176,6 +183,8 @@ public class NewToDo extends AppCompatActivity {
         }
         //get dueDateTime
         currentToDo.setDueDateTime(createDateTime());
+        //save image
+        currentToDo.setImage(imageUri.toString());
         //save & return
         ToDoStorage.addToToDoArrayList(currentToDo);
         showAllToDos();
