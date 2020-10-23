@@ -1,9 +1,12 @@
 package ch.ost.rj.mge.mind_supporter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String[] PERMISSIONS = {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        };
+        ActivityCompat.requestPermissions(
+                this,
+                PERMISSIONS,
+                0
+        );
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         adapter = new ToDosAdapter(ToDoStorage.getToDoArrayList(), this);
