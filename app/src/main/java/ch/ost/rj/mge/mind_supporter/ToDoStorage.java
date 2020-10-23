@@ -56,9 +56,7 @@ public class ToDoStorage {
         persistFile = new File(App.getContext().getFilesDir(), "todos");
         try {
             ToDoStorage.replaceToDoArrayListWithPersistedToDoArrayList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -71,9 +69,17 @@ public class ToDoStorage {
         ToDoStorage.toDoArrayList = toDoArrayList;
     }
 
-    public static void addToToDoArrayList(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, String image, String note) throws IOException {
-        toDoArrayList.add(new ToDo(title, dueDateTime, durationMinutes, priority, finished, image, note));
-        sortDueTime();;
+    public static void addToToDoArrayList(ToDo currentToDo) throws IOException {
+        for(ToDo x : toDoArrayList){
+            if (x.getTitle().equals(currentToDo.getTitle())) {
+                x.overrideWithOtherToDo(currentToDo);
+                sortDueTime();
+                persist();
+                return;
+            }
+        }
+        toDoArrayList.add(new ToDo(currentToDo.getTitle(), currentToDo.getDueDateTime(), currentToDo.getDurationMinutes(), currentToDo.getPriority(), currentToDo.isFinished(), currentToDo.getImage(), currentToDo.getNote()));
+        sortDueTime();
         persist();
     }
 

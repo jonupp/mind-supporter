@@ -80,4 +80,14 @@ public class ToDo implements Serializable {
     public String getNote(){ return note; }
 
     public void setNote(String note){ this.note = note; }
+
+    public void overrideWithOtherToDo(ToDo newToDo){
+        this.title = newToDo.getTitle();
+        this.dueDateTime = newToDo.getDueDateTime();
+        this.durationMinutes = newToDo.getDurationMinutes();
+        this.priority = newToDo.getPriority();
+        this.finished = newToDo.isFinished();
+        this.image = newToDo.getImage();
+        this.note = newToDo.getNote();
+    }
 }

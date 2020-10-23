@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RatingBar;
+import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,9 +34,11 @@ import java.util.Calendar;
 public class NewToDo extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
-    String title, timeUnit, note;
-    int deadlineYear, deadlineMonth, deadlineDay, deadlineHour, deadlineMinute, expenditure, priority;
-    private boolean status;
+
+    private final ToDo currentToDo = new ToDo("", null, 0, 0, false, "../../res/drawable/image_placeholder.xml", "");
+
+    String timeUnit;
+    int deadlineYear, deadlineMonth, deadlineDay, deadlineHour = 10, deadlineMinute;
     Uri imageUri = Uri.parse("../../res/drawable/image_placeholder.xml");
 
     private void reactionToast(String note) {
@@ -102,33 +105,77 @@ public class NewToDo extends AppCompatActivity {
         }
     }
 
+    private void setCurrentToDoInputs(){
+        //set Title
+        EditText etTitle = findViewById(R.id.new_todo_edittext_title);
+        etTitle.setText(currentToDo.getTitle());
+        //set deadlineDate
+        /*
+        if(currentToDo.getDueDateTime().isEqual(null)){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String str = currentToDo.getDueDateTime().format(formatter);
+            reactionToast(currentToDo.getDueDateTime().format(formatter));
+
+
+            String dueDateTime = (String) currentToDo.getDueDateTime().toString();
+            String[] date = dueDateTime.split(" ", 2);
+            reactionToast(date[0] + "\n" + date[1]);
+            Button dateBtn = findViewById(R.id.new_todo_button_deadline_date);
+            dateBtn.setText(date[0]);
+            Button timeBtn = findViewById(R.id.new_todo_button_deadline_time);
+            timeBtn.setText(date[1]);
+
+        }*/
+
+        //set Duration
+        NumberPicker np = findViewById(R.id.new_todo_numberpicker_time_expenditure);
+        np.setValue(currentToDo.getDurationMinutes());
+        np.setEnabled(true);
+        //set Priority
+        RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
+        ratingBar.setNumStars(currentToDo.getPriority());
+        //set Note
+        EditText etNote = findViewById(R.id.new_todo_edittext_note);
+        etNote.setText(currentToDo.getNote());
+        //set Status
+        CheckBox cb = findViewById(R.id.new_todo_checkbox_status);
+        cb.setActivated(currentToDo.isFinished());
+        //set Image
+        ImageView image = findViewById(R.id.floating_action_button_pick_picture);
+        image.setImageURI(Uri.parse(currentToDo.getImage()));
+    }
+
     private void saveToDo() throws IOException {
         //get Title
         EditText et = findViewById(R.id.new_todo_edittext_title);
-        title = et.getText().toString();
-        if (title.isEmpty()) {
+        currentToDo.setTitle(et.getText().toString());
+        if (currentToDo.getTitle().isEmpty()) {
             reactionToast("Title is not defined");
             return;
         }
+
         if (deadlineYear == 0 || deadlineMonth == 0 || deadlineDay == 0) {
             reactionToast("Deadline Date is not defined");
             return;
         }
         //get Priority
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
-        priority = ratingBar.getNumStars();
+        currentToDo.setPriority(ratingBar.getNumStars());
         //get Note
         EditText editTextNote = findViewById(R.id.new_todo_edittext_note);
-        note = editTextNote.getText().toString();
+        currentToDo.setNote(editTextNote.getText().toString());
         switch (timeUnit) {
             case "hours":
-                expenditure *= 60;
+                currentToDo.setDurationMinutes(currentToDo.getDurationMinutes() * 60);
                 break;
             case "days":
-                expenditure *= 60 * 24;
+                currentToDo.setDurationMinutes(currentToDo.getDurationMinutes() * 60 * 24);
                 break;
         }
-        ToDoStorage.addToToDoArrayList(title, createDateTime(), expenditure, priority, status, imageUri.toString(), note);
+        //get dueDateTime
+        currentToDo.setDueDateTime(createDateTime());
+        //save & return
+        ToDoStorage.addToToDoArrayList(currentToDo);
         showAllToDos();
     }
 
@@ -136,74 +183,53 @@ public class NewToDo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_to_do);
+        //for editing existing ToDoObj
+        Bundle bundle = getIntent().getExtras();
+        currentToDo.overrideWithOtherToDo((ToDo) bundle.getSerializable("todo"));
+        imageUri = Uri.parse(currentToDo.getImage());
+        setCurrentToDoInputs();
+
 
         FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
-        abortBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAllToDos();
-            }
-        });
+        abortBtn.setOnClickListener(v -> showAllToDos());
 
         //get Image
         final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
-        pickPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getImageFromLibrary();
-            }
-        });
+        pickPicture.setOnClickListener(v -> getImageFromLibrary());
+        ImageView imageView = findViewById(R.id.new_todo_image);
+        imageView.setImageURI(imageUri);
+
         //save inputs as newToDo
         FloatingActionButton saveToDo = findViewById(R.id.floating_action_button_transact);
-        saveToDo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    saveToDo();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        saveToDo.setOnClickListener(v -> {
+            try {
+                saveToDo();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
         //get Deadline
         final Context context = this;
         Calendar calendar = Calendar.getInstance();
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        final int month = calendar.get(Calendar.MONTH);
-        final int year = calendar.get(Calendar.YEAR);
-        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        final int minute = calendar.get(Calendar.MINUTE);
         final Button pickTimeButton = findViewById(R.id.new_todo_button_deadline_time);
-        pickTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        deadlineHour = hourOfDay;
-                        deadlineMinute = minute;
-                        pickTimeButton.setText(hourOfDay + ":" + minute);
-                    }
-                }, hour, minute, android.text.format.DateFormat.is24HourFormat(context));
-                timePickerDialog.show();
-            }
+        pickTimeButton.setOnClickListener(v -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(context, (view, hourOfDay, minute1) -> {
+                deadlineHour = hourOfDay;
+                deadlineMinute = minute1;
+                pickTimeButton.setText(hourOfDay + ":" + minute1);
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(context));
+            timePickerDialog.show();
         });
         final Button pickDateButton = findViewById(R.id.new_todo_button_deadline_date);
-        pickDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        deadlineYear = year;
-                        deadlineMonth = ++month;
-                        deadlineDay = dayOfMonth;
-                        pickDateButton.setText(dayOfMonth + "." + month + "." + year);
-                    }
-                }, year, month, day);
-                datePickerDialog.show();
-            }
+        pickDateButton.setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(context, (view, year1, month1, dayOfMonth) -> {
+                deadlineYear = year1;
+                deadlineMonth = ++month1;
+                deadlineDay = dayOfMonth;
+                pickDateButton.setText(dayOfMonth + "." + month1 + "." + year1);
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
         });
 
         //get Expenditure
@@ -212,12 +238,7 @@ public class NewToDo extends AppCompatActivity {
             numberPicker.setMinValue(0);
             numberPicker.setMaxValue(100);
             numberPicker.setWrapSelectorWheel(true);
-            numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    expenditure = newVal;
-                }
-            });
+            numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> currentToDo.setDurationMinutes(newVal));
         }
         Spinner timeSpinner = findViewById(R.id.new_todo_spinner_timeunits);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -228,12 +249,7 @@ public class NewToDo extends AppCompatActivity {
 
         //get Status
         CheckBox checkBox = findViewById(R.id.new_todo_checkbox_status);
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                status = isChecked;
-            }
-        });
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> currentToDo.setFinished(isChecked));
 
 
     }

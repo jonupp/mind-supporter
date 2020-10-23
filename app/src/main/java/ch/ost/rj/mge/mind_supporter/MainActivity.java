@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openNewToDo(){
         Intent intent = new Intent(this, NewToDo.class);
+        intent.putExtra("todo", new ToDo("", null, 0, 0, false, "../../res/drawable/image_placeholder.xml", ""));
         startActivity(intent);
     }
 
