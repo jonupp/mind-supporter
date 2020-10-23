@@ -110,12 +110,12 @@ public class NewToDo extends AppCompatActivity {
         EditText etTitle = findViewById(R.id.new_todo_edittext_title);
         etTitle.setText(currentToDo.getTitle());
         //set deadlineDate
+
         /*
         if(currentToDo.getDueDateTime().isEqual(null)){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             String str = currentToDo.getDueDateTime().format(formatter);
             reactionToast(currentToDo.getDueDateTime().format(formatter));
-
 
             String dueDateTime = (String) currentToDo.getDueDateTime().toString();
             String[] date = dueDateTime.split(" ", 2);
@@ -124,7 +124,6 @@ public class NewToDo extends AppCompatActivity {
             dateBtn.setText(date[0]);
             Button timeBtn = findViewById(R.id.new_todo_button_deadline_time);
             timeBtn.setText(date[1]);
-
         }*/
 
         //set Duration
@@ -149,7 +148,7 @@ public class NewToDo extends AppCompatActivity {
         //get Title
         EditText et = findViewById(R.id.new_todo_edittext_title);
         currentToDo.setTitle(et.getText().toString());
-        if (currentToDo.getTitle().isEmpty()) {
+        /*if (currentToDo.getTitle().isEmpty()) {
             reactionToast("Title is not defined");
             return;
         }
@@ -157,7 +156,7 @@ public class NewToDo extends AppCompatActivity {
         if (deadlineYear == 0 || deadlineMonth == 0 || deadlineDay == 0) {
             reactionToast("Deadline Date is not defined");
             return;
-        }
+        }*/
         //get Priority
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
         currentToDo.setPriority(ratingBar.getNumStars());
