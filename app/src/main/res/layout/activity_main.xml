@@ -25,6 +25,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:tint="#FFFFFF" />
+        android:backgroundTint="@color/colorPrimary"
+        app:tint="@android:color/white"
+        app:borderWidth="0dp"
+        android:contentDescription="@string/content_descriptor_floating_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
