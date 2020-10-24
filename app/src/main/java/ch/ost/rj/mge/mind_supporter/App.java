@@ -6,19 +6,21 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 
+import java.io.File;
+
 public class App extends Application {
 
-    private static Context mContext;
+    private static File file;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = this;
         scheduleJob(this);
-
+        file = new File(this.getFilesDir(), "todos");
     }
-    public static Context getContext(){
-        return mContext;
+
+    public static File getFile(){
+        return file;
     }
 
     public static void scheduleJob(Context context) {

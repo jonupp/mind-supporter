@@ -37,7 +37,7 @@ public class NotificationJobService extends JobService {
         createNotificationChannel();
         String title = null;
         try {
-            FileInputStream fis = new FileInputStream(new File(App.getContext().getFilesDir(), "todos"));
+            FileInputStream fis = new FileInputStream(new File(this.getFilesDir(), "todos"));
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<ToDo> toDoArrayList = (ArrayList<ToDo>) ois.readObject();
             ois.close();

@@ -1,14 +1,11 @@
 package ch.ost.rj.mge.mind_supporter;
 
-import android.net.Uri;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ToDoStorage {
@@ -26,6 +23,7 @@ public class ToDoStorage {
     public static void replaceToDoArrayListWithPersistedToDoArrayList() throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(persistFile);
         ObjectInputStream ois = new ObjectInputStream(fis);
+
         toDoArrayList = (ArrayList<ToDo>) ois.readObject();
         ois.close();
         fis.close();
@@ -53,7 +51,7 @@ public class ToDoStorage {
 
     static{
         toDoArrayList = new ArrayList<>();
-        persistFile = new File(App.getContext().getFilesDir(), "todos");
+        persistFile = App.getFile();
         try {
             ToDoStorage.replaceToDoArrayListWithPersistedToDoArrayList();
         } catch (IOException | ClassNotFoundException e) {
@@ -63,10 +61,6 @@ public class ToDoStorage {
 
     public static ArrayList<ToDo> getToDoArrayList() {
         return toDoArrayList;
-    }
-
-    public static void setToDoArrayList(ArrayList<ToDo> toDoArrayList) {
-        ToDoStorage.toDoArrayList = toDoArrayList;
     }
 
     public static void addToToDoArrayList(ToDo currentToDo) throws IOException {
@@ -90,6 +84,6 @@ public class ToDoStorage {
     }
 
     private static void sortDueTime(){
-        toDoArrayList.sort((a,b)->{return a.getDueDateTime().compareTo(b.getDueDateTime());});
+        toDoArrayList.sort((a,b)-> a.getDueDateTime().compareTo(b.getDueDateTime()));
     }
 }

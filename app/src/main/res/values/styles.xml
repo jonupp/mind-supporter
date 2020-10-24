@@ -11,7 +11,7 @@
         <item name="colorControlNormal">@android:color/black</item>
         <item name="android:datePickerDialogTheme">@style/datePicker</item>
         <item name="android:itemBackground">@android:color/white</item>
-
+        <item name="alertDialogTheme">@style/AlertDialogCustom</item>
     </style>
 
     <style name="datePicker" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
@@ -24,10 +24,16 @@
         <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButtonStyle</item>
     </style>
 
-<style name="DatePickerButtonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
-<item name="android:textColor">@color/colorPrimary</item>
-<item name="android:backgroundTint">@android:color/white</item>
+<style name="DatePickerButtonStyle" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+    <item name="android:textColor">@color/colorPrimary</item>
+    <item name="android:backgroundTint">@android:color/white</item>
 </style>
 
+    <style name="AlertDialogCustom" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/colorAccent</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DatePickerButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DatePickerButtonStyle</item>
+    </style>
 
 </resources>
