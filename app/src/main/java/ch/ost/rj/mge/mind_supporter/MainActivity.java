@@ -5,27 +5,24 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter<ToDosViewHolder> adapter;
     private Menu menu;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.filter_menu, menu);
         this.menu = menu;
+        this.menu.getItem(2).setChecked(true);
         return true;
     }
 
@@ -40,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
         MenuItem show_finished =  menu.getItem(1);
         MenuItem show_all =  menu.getItem(2);
 
-        switch(item.getItemId()){
-        case R.id.show_pending:
+        switch(item.getTitle().toString()){
+            case "Show pending":
             if(item.isChecked()){
                 return;
             }else{
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 item.setChecked(true);
             }
             break;
-        case R.id.show_finished:
+        case "Show finished":
             if(item.isChecked()){
                 return;
             }else {
@@ -61,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 item.setChecked(true);
             }
             break;
-        case R.id.show_all:
+        case "Show all":
             if(item.isChecked()){
                 return;
             }else {
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        adapter = new ToDosAdapter(ToDoStorage.getToDoArrayList(), this);
+        adapter = new ToDosAdapter(ToDoStorage.getToDoArrayList());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         dividerItemDecoration.getDrawable();
 
@@ -98,11 +95,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         FloatingActionButton newToDo = findViewById(R.id.floatingActionButton2);
-        newToDo.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                openNewToDo();
-            }
-        });
+        newToDo.setOnClickListener((v)-> openNewToDo());
     }
 }
