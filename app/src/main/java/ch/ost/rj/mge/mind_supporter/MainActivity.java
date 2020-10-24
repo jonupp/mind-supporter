@@ -20,10 +20,12 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private Menu menu;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.filter_menu, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -34,15 +36,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onGroupItemClick(MenuItem item) {
-    switch(item.getItemId()){
+        MenuItem show_pending = menu.getItem(0);
+        MenuItem show_finished =  menu.getItem(1);
+        MenuItem show_all =  menu.getItem(2);
+
+        switch(item.getItemId()){
         case R.id.show_pending:
-            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getPending());
+            if(item.isChecked()){
+                return;
+            }else{
+                ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getPending());
+                show_finished.setChecked(false);
+                show_all.setChecked(false);
+                item.setChecked(true);
+            }
             break;
         case R.id.show_finished:
-            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getFinished());
+            if(item.isChecked()){
+                return;
+            }else {
+                ((ToDosAdapter) adapter).setAdapterDataBasis(ToDoStorage.getFinished());
+                show_pending.setChecked(false);
+                show_all.setChecked(false);
+                item.setChecked(true);
+            }
             break;
         case R.id.show_all:
-            ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getToDoArrayList());
+            if(item.isChecked()){
+                return;
+            }else {
+                ((ToDosAdapter) adapter).setAdapterDataBasis(ToDoStorage.getToDoArrayList());
+                show_pending.setChecked(false);
+                show_finished.setChecked(false);
+                item.setChecked(true);
+            }
             break;
         }
     }

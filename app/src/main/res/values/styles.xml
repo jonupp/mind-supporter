@@ -25,9 +25,11 @@
     </style>
 
 <style name="DatePickerButtonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
-<item name="android:textColor">@color/colorPrimary</item>
-<item name="android:backgroundTint">@android:color/white</item>
+    <item name="android:textColor">@color/colorPrimary</item>
+    <item name="android:backgroundTint">@android:color/white</item>
 </style>
+
+
 
 
 </resources>

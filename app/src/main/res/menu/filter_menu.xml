@@ -1,17 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-        <group android:id="@+id/group">
+        <group android:id="@+id/group" android:checkableBehavior="single">
         <item android:id="@+id/show_pending"
             android:onClick="onGroupItemClick"
             android:title="@string/show_pending"
+            android:checkable="true"
             />
         <item android:id="@+id/show_finished"
             android:onClick="onGroupItemClick"
             android:title="@string/show_finished"
-             />
+            android:checkable="true"
+            />
             <item android:id="@+id/show_all"
                 android:onClick="onGroupItemClick"
                 android:title="@string/show_all"
+                android:checkable="true"
                 />
     </group>
 </menu>
