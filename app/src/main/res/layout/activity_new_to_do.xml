@@ -109,7 +109,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:layout_marginStart="20dp"
-        android:importantForAutofill="no"
+        android:importantForAutofill="yes"
         app:layout_constraintStart_toStartOf="@+id/new_todo_edittext_title"
         app:layout_constraintTop_toBottomOf="@+id/new_todo_button_deadline_date" />
 
@@ -127,7 +127,7 @@
 
     <androidx.appcompat.widget.AppCompatRatingBar
         android:id="@+id/new_todo_ratingbar_priority"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:padding="0dp"

@@ -9,8 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.Console;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -49,6 +53,8 @@ public class ToDosAdapter extends RecyclerView.Adapter<ToDosViewHolder> {
             Intent editNoteIntent = new Intent(context, NewToDo.class);
             editNoteIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             editNoteIntent.putExtra("todo", todo);
+            editNoteIntent.putExtra("isNewFlag", false);
+            toDoArrayList.remove(todo);
             context.startActivity(editNoteIntent);
         });
 

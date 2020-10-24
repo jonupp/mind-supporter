@@ -64,14 +64,6 @@ public class ToDoStorage {
     }
 
     public static void addToToDoArrayList(ToDo currentToDo) throws IOException {
-        for(ToDo x : toDoArrayList){
-            if (x.getTitle().equals(currentToDo.getTitle())) {
-                x.overrideWithOtherToDo(currentToDo);
-                sortDueTime();
-                persist();
-                return;
-            }
-        }
         toDoArrayList.add(new ToDo(currentToDo.getTitle(), currentToDo.getDueDateTime(), currentToDo.getDurationMinutes(), currentToDo.getPriority(), currentToDo.isFinished(), currentToDo.getImage(), currentToDo.getNote()));
         sortDueTime();
         persist();

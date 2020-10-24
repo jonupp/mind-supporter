@@ -30,15 +30,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 public class NewToDo extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
-
-    private final ToDo currentToDo = new ToDo("", null, 0, 0, false, "../../res/drawable/image_placeholder.xml", "");
 
     String timeUnit;
     int deadlineYear, deadlineMonth, deadlineDay, deadlineHour = 10, deadlineMinute;
@@ -46,6 +48,12 @@ public class NewToDo extends AppCompatActivity {
 
     private void reactionToast(String note) {
         Toast.makeText(NewToDo.this, note, Toast.LENGTH_SHORT).show();
+    }
+
+    private LocalDateTime createDefaultDateTime() {
+        String str = "9999-12-31 23:59";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.parse(str, formatter);
     }
 
     private LocalDateTime createDateTime() {
@@ -70,9 +78,7 @@ public class NewToDo extends AppCompatActivity {
         } else {
             dateTime += deadlineMinute;
         }
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
         return LocalDateTime.parse(dateTime, formatter);
     }
 
@@ -86,9 +92,6 @@ public class NewToDo extends AppCompatActivity {
         intent.setDataAndType(MediaStore.Images.Media.INTERNAL_CONTENT_URI,"image/*");
         intent.setAction(Intent. ACTION_OPEN_DOCUMENT );
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-
-
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
@@ -114,50 +117,37 @@ public class NewToDo extends AppCompatActivity {
         }
     }
 
-    private void setCurrentToDoInputs(){
+    private void setCurrentToDoInputs(ToDo currentToDo){
         //set Title
         EditText etTitle = findViewById(R.id.new_todo_edittext_title);
         etTitle.setText(currentToDo.getTitle());
         //set deadlineDate
-
-        /*
-        if(currentToDo.getDueDateTime().isEqual(null)){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            String str = currentToDo.getDueDateTime().format(formatter);
-            reactionToast(currentToDo.getDueDateTime().format(formatter));
-
-            String dueDateTime = (String) currentToDo.getDueDateTime().toString();
-            String[] date = dueDateTime.split(" ", 2);
-            reactionToast(date[0] + "\n" + date[1]);
-            Button dateBtn = findViewById(R.id.new_todo_button_deadline_date);
-            dateBtn.setText(date[0]);
-            Button timeBtn = findViewById(R.id.new_todo_button_deadline_time);
-            timeBtn.setText(date[1]);
-        }*/
-
+        Button dateBtn = findViewById(R.id.new_todo_button_deadline_date);
+        dateBtn.setText(deadlineDay+"."+deadlineMonth+"."+deadlineYear);
+        Button timeBtn = findViewById(R.id.new_todo_button_deadline_time);
+        timeBtn.setText(deadlineHour+":"+deadlineMinute);
         //set Duration
         NumberPicker np = findViewById(R.id.new_todo_numberpicker_time_expenditure);
         np.setValue(currentToDo.getDurationMinutes());
-        np.setEnabled(true);
         //set Priority
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
-        ratingBar.setNumStars(currentToDo.getPriority());
+        ratingBar.setRating(currentToDo.getPriority());
         //set Note
         EditText etNote = findViewById(R.id.new_todo_edittext_note);
         etNote.setText(currentToDo.getNote());
         //set Status
         CheckBox cb = findViewById(R.id.new_todo_checkbox_status);
-        cb.setActivated(currentToDo.isFinished());
+        cb.setChecked(currentToDo.isFinished());
         //set Image
         ImageView image = findViewById(R.id.new_todo_image);
         image.setImageURI(Uri.parse(currentToDo.getImage()));
     }
 
-    private void saveToDo() throws IOException {
+    private void saveToDo(ToDo currentToDo, boolean isNew) throws IOException {
         //get Title
         EditText et = findViewById(R.id.new_todo_edittext_title);
         currentToDo.setTitle(et.getText().toString());
-        /*if (currentToDo.getTitle().isEmpty()) {
+        if (currentToDo.getTitle().isEmpty()) {
             reactionToast("Title is not defined");
             return;
         }
@@ -165,7 +155,7 @@ public class NewToDo extends AppCompatActivity {
         if (deadlineYear == 0 || deadlineMonth == 0 || deadlineDay == 0) {
             reactionToast("Deadline Date is not defined");
             return;
-        }*/
+        }
         //get Priority
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
         currentToDo.setPriority(ratingBar.getNumStars());
@@ -194,14 +184,35 @@ public class NewToDo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_to_do);
         //for editing existing ToDoObj
+        ToDo currentToDo;
         Bundle bundle = getIntent().getExtras();
-        currentToDo.overrideWithOtherToDo((ToDo) bundle.getSerializable("todo"));
+        final boolean isNew = bundle.getBoolean("isNewFlag");
+        if(!isNew){
+            currentToDo = (ToDo) bundle.getSerializable("todo");
+            deadlineYear = currentToDo.getDueDateTime().getYear();
+            deadlineMonth = currentToDo.getDueDateTime().getMonthValue();
+            deadlineDay = currentToDo.getDueDateTime().getDayOfMonth();
+            deadlineHour = currentToDo.getDueDateTime().getHour();
+            deadlineMinute = currentToDo.getDueDateTime().getMinute();
+            setCurrentToDoInputs(currentToDo);
+        }else {
+            currentToDo = new ToDo("", createDefaultDateTime(), 0, 0, false, "../../res/drawable/image_placeholder.xml", "");
+        }
         imageUri = Uri.parse(currentToDo.getImage());
-        setCurrentToDoInputs();
-
 
         FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
-        abortBtn.setOnClickListener(v -> showAllToDos());
+        abortBtn.setOnClickListener(v -> {
+            if (!isNew){
+                try {
+                    saveToDo(currentToDo, isNew);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                showAllToDos();
+            }
+
+        });
 
         //get Image
         final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
@@ -213,7 +224,7 @@ public class NewToDo extends AppCompatActivity {
         FloatingActionButton saveToDo = findViewById(R.id.floating_action_button_transact);
         saveToDo.setOnClickListener(v -> {
             try {
-                saveToDo();
+                saveToDo(currentToDo, isNew);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -246,7 +257,7 @@ public class NewToDo extends AppCompatActivity {
         NumberPicker numberPicker = findViewById(R.id.new_todo_numberpicker_time_expenditure);
         if (numberPicker != null) {
             numberPicker.setMinValue(0);
-            numberPicker.setMaxValue(100);
+            numberPicker.setMaxValue(2_000_000);
             numberPicker.setWrapSelectorWheel(true);
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> currentToDo.setDurationMinutes(newVal));
         }
@@ -260,7 +271,5 @@ public class NewToDo extends AppCompatActivity {
         //get Status
         CheckBox checkBox = findViewById(R.id.new_todo_checkbox_status);
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> currentToDo.setFinished(isChecked));
-
-
     }
 }
