@@ -1,6 +1,6 @@
 package ch.ost.rj.mge.mind_supporter;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
