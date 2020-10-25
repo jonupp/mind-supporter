@@ -46,6 +46,64 @@ public class NewToDo extends AppCompatActivity {
     int deadlineYear, deadlineMonth, deadlineDay, deadlineHour = 10, deadlineMinute;
     Uri imageUri = Uri.parse("../../res/drawable/image_placeholder.xml");
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_to_do);
+        setSpinner();
+        //for editing existing ToDoObj
+        ToDo currentToDo;
+        Bundle bundle = getIntent().getExtras();
+        final boolean isNew = (boolean) bundle.getBoolean("isNewFlag");
+        if(!isNew){
+            currentToDo = (ToDo) bundle.getSerializable("todo");
+            deadlineYear = currentToDo.getDueDateTime().getYear();
+            deadlineMonth = currentToDo.getDueDateTime().getMonthValue();
+            deadlineDay = currentToDo.getDueDateTime().getDayOfMonth();
+            deadlineHour = currentToDo.getDueDateTime().getHour();
+            deadlineMinute = currentToDo.getDueDateTime().getMinute();
+            getExpenditure(currentToDo);
+            setCurrentToDoInputs(currentToDo);
+        }else {
+            currentToDo = new ToDo("", createDefaultDateTime(), 0, 0, false, "../../res/drawable/image_placeholder.xml", "");
+            getExpenditure(currentToDo);
+        }
+        imageUri = Uri.parse(currentToDo.getImage());
+
+        FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
+        abortBtn.setOnClickListener(v -> {
+            if (!isNew){
+                try {
+                    saveToDo(currentToDo, false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                showAllToDos();
+            }
+
+        });
+
+        //get Image
+        final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
+        pickPicture.setOnClickListener(v -> getImageFromLibrary());
+        ImageView imageView = findViewById(R.id.new_todo_image);
+        imageView.setImageURI(imageUri);
+
+        //save inputs as newToDo
+        FloatingActionButton saveToDo = findViewById(R.id.floating_action_button_transact);
+        saveToDo.setOnClickListener(v -> {
+            try {
+                saveToDo(currentToDo, isNew);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        getDeadline();
+        getStatus(currentToDo);
+    }
+
     private void reactionToast(String note) {
         Toast.makeText(NewToDo.this, note, Toast.LENGTH_SHORT).show();
     }
@@ -128,7 +186,21 @@ public class NewToDo extends AppCompatActivity {
         timeBtn.setText(deadlineHour+":"+deadlineMinute);
         //set Duration
         NumberPicker np = findViewById(R.id.new_todo_numberpicker_time_expenditure);
-        np.setValue(currentToDo.getDurationMinutes());
+        int durationMinutes = currentToDo.getDurationMinutes();
+        np.setMaxValue(durationMinutes*3);
+        Spinner spinner = findViewById(R.id.new_todo_spinner_timeunits);
+        if(durationMinutes%(24*60) == 0){
+            spinner.setSelection(2);
+            np.setValue(durationMinutes/24/60);
+            currentToDo.setDurationMinutes(durationMinutes/24/60);
+        }else if (durationMinutes%60 == 0){
+            spinner.setSelection(1);
+            np.setValue(durationMinutes/60);
+            currentToDo.setDurationMinutes(durationMinutes/60);
+        }else {
+            spinner.setSelection(0);
+            np.setValue(durationMinutes);
+        }
         //set Priority
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
         ratingBar.setRating(currentToDo.getPriority());
@@ -158,10 +230,12 @@ public class NewToDo extends AppCompatActivity {
         }
         //get Priority
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
-        currentToDo.setPriority(ratingBar.getNumStars());
+        currentToDo.setPriority((int) ratingBar.getRating());
         //get Note
         EditText editTextNote = findViewById(R.id.new_todo_edittext_note);
         currentToDo.setNote(editTextNote.getText().toString());
+        Spinner timeSpinner = findViewById(R.id.new_todo_spinner_timeunits);
+        timeUnit = timeSpinner.getSelectedItem().toString();
         switch (timeUnit) {
             case "hours":
                 currentToDo.setDurationMinutes(currentToDo.getDurationMinutes() * 60);
@@ -179,58 +253,7 @@ public class NewToDo extends AppCompatActivity {
         showAllToDos();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_to_do);
-        //for editing existing ToDoObj
-        ToDo currentToDo;
-        Bundle bundle = getIntent().getExtras();
-        final boolean isNew = bundle.getBoolean("isNewFlag");
-        if(!isNew){
-            currentToDo = (ToDo) bundle.getSerializable("todo");
-            deadlineYear = currentToDo.getDueDateTime().getYear();
-            deadlineMonth = currentToDo.getDueDateTime().getMonthValue();
-            deadlineDay = currentToDo.getDueDateTime().getDayOfMonth();
-            deadlineHour = currentToDo.getDueDateTime().getHour();
-            deadlineMinute = currentToDo.getDueDateTime().getMinute();
-            setCurrentToDoInputs(currentToDo);
-        }else {
-            currentToDo = new ToDo("", createDefaultDateTime(), 0, 0, false, "../../res/drawable/image_placeholder.xml", "");
-        }
-        imageUri = Uri.parse(currentToDo.getImage());
-
-        FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
-        abortBtn.setOnClickListener(v -> {
-            if (!isNew){
-                try {
-                    saveToDo(currentToDo, isNew);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else {
-                showAllToDos();
-            }
-
-        });
-
-        //get Image
-        final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
-        pickPicture.setOnClickListener(v -> getImageFromLibrary());
-        ImageView imageView = findViewById(R.id.new_todo_image);
-        imageView.setImageURI(imageUri);
-
-        //save inputs as newToDo
-        FloatingActionButton saveToDo = findViewById(R.id.floating_action_button_transact);
-        saveToDo.setOnClickListener(v -> {
-            try {
-                saveToDo(currentToDo, isNew);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        //get Deadline
+    private void getDeadline() {
         final Context context = this;
         Calendar calendar = Calendar.getInstance();
         final Button pickTimeButton = findViewById(R.id.new_todo_button_deadline_time);
@@ -252,23 +275,30 @@ public class NewToDo extends AppCompatActivity {
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
+    }
 
-        //get Expenditure
+    private void getExpenditure(ToDo currentToDo) {
         NumberPicker numberPicker = findViewById(R.id.new_todo_numberpicker_time_expenditure);
         if (numberPicker != null) {
             numberPicker.setMinValue(0);
-            numberPicker.setMaxValue(2_000_000);
+            if (currentToDo.getDurationMinutes() != 0) {
+                numberPicker.setMaxValue(currentToDo.getDurationMinutes());
+            }else numberPicker.setMaxValue(180);
             numberPicker.setWrapSelectorWheel(true);
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> currentToDo.setDurationMinutes(newVal));
         }
+    }
+
+    private void setSpinner() {
         Spinner timeSpinner = findViewById(R.id.new_todo_spinner_timeunits);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.time_units, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeSpinner.setAdapter(adapter);
         timeUnit = timeSpinner.getSelectedItem().toString();
+    }
 
-        //get Status
+    private void getStatus(ToDo currentToDo) {
         CheckBox checkBox = findViewById(R.id.new_todo_checkbox_status);
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> currentToDo.setFinished(isChecked));
     }
