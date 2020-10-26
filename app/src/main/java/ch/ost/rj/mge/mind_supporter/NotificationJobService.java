@@ -14,7 +14,6 @@ import java.io.ObjectInputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class NotificationJobService extends JobService {
     NotificationManager mNotifyManager;
@@ -22,7 +21,6 @@ public class NotificationJobService extends JobService {
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
 
     public void createNotificationChannel() {
-
         mNotifyManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
             NotificationChannel notificationChannel = new NotificationChannel

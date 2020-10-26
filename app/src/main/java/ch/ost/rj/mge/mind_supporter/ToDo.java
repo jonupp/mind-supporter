@@ -1,6 +1,5 @@
 package ch.ost.rj.mge.mind_supporter;
 
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -14,8 +13,6 @@ public class ToDo implements Serializable {
     private String image;
     private String note;
 
-
-
     public ToDo(String title, LocalDateTime dueDateTime, int durationMinutes, int priority, boolean finished, String image, String note){
         this.title=title;
         this.dueDateTime=dueDateTime;
@@ -26,7 +23,7 @@ public class ToDo implements Serializable {
         if(image == null){ //User provided no image --> use standard image in to_do_list_item_layout
             return;
         }
-        this.image=image; //User provided an image
+        this.image=image;
     }
 
     public String getTitle() {
@@ -77,8 +74,10 @@ public class ToDo implements Serializable {
         this.image = image;
     }
 
-    public String getNote(){ return note; }
+    public String getNote(){
+        return note; }
 
-    public void setNote(String note){ this.note = note; }
-
+    public void setNote(String note){
+        this.note = note;
+    }
 }

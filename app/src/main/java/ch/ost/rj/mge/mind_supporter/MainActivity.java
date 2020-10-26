@@ -78,11 +78,7 @@ public class MainActivity extends AppCompatActivity {
         String[] PERMISSIONS = {
                 Manifest.permission.READ_EXTERNAL_STORAGE
         };
-        ActivityCompat.requestPermissions(
-                this,
-                PERMISSIONS,
-                0
-        );
+        ActivityCompat.requestPermissions(this,PERMISSIONS,0);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         adapter = new ToDosAdapter(ToDoStorage.getToDoArrayList());

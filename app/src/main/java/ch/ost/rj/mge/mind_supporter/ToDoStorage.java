@@ -12,6 +12,16 @@ public class ToDoStorage {
     private static ArrayList<ToDo> toDoArrayList;
     public static File persistFile;
 
+    static{
+        toDoArrayList = new ArrayList<>();
+        persistFile = App.getFile();
+        try {
+            ToDoStorage.replaceToDoArrayListWithPersistedToDoArrayList();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void persist() throws IOException {
         FileOutputStream fos = new FileOutputStream(persistFile);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -47,16 +57,6 @@ public class ToDoStorage {
             }
         }
         return out;
-    }
-
-    static{
-        toDoArrayList = new ArrayList<>();
-        persistFile = App.getFile();
-        try {
-            ToDoStorage.replaceToDoArrayListWithPersistedToDoArrayList();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     public static ArrayList<ToDo> getToDoArrayList() {
