@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class NotificationJobService extends JobService {
     NotificationManager mNotifyManager;
@@ -43,36 +44,36 @@ public class NotificationJobService extends JobService {
             ois.close();
             fis.close();
 
+            PendingIntent contentPendingIntent = PendingIntent.getActivity
+                    (this, 0, new Intent(this, MainActivity.class),
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+
             LocalDateTime now = LocalDateTime.now();
+            int i = 0;
             for(ToDo t : toDoArrayList){
+                if(t.isFinished()){
+                    continue;
+                }
                 long timeDelta = ChronoUnit.MINUTES.between(now, t.getDueDateTime());
-                if(timeDelta > 0 &&  timeDelta < t.getDurationMinutes()+20 ){ //Dont send notification for past todos
+                if(timeDelta - t.getDurationMinutes() > 0 && timeDelta - t.getDurationMinutes() < 60){ //Dont send notification for past todos
                     title = t.getTitle();
-                    break;
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder
+                            (this, PRIMARY_CHANNEL_ID)
+                            .setContentTitle("Mind Supporter")
+                            .setContentText("ToDo has to be done: " + title)
+                            .setContentIntent(contentPendingIntent)
+                            .setSmallIcon(R.drawable.image_placeholder)
+                            .setDefaults(NotificationCompat.DEFAULT_ALL)
+                            .setAutoCancel(true);
+
+                    mNotifyManager.notify(i, builder.build());
+                    i++;
                 }
             }
         } catch (IOException | ClassNotFoundException e) { //No todos found
             return true;
         }
-
-        if(title == null){
-            return false;
-        }
-
-        PendingIntent contentPendingIntent = PendingIntent.getActivity
-                (this, 0, new Intent(this, MainActivity.class),
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder
-                (this, PRIMARY_CHANNEL_ID)
-                .setContentTitle("Mind Supporter")
-                .setContentText("ToDo has to be done: " + title)
-                .setContentIntent(contentPendingIntent)
-                .setSmallIcon(R.drawable.image_placeholder)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setAutoCancel(true);
-
-        mNotifyManager.notify(0, builder.build());
         return false;
     }
 
