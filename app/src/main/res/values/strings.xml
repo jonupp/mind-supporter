@@ -3,6 +3,7 @@
     <string name="show_pending">Show pending</string>
     <string name="show_finished">Show finished</string>
     <string name="show_all">Show all</string>
+    <string name="show_pending_sorted">Show pending sorted</string>
     <string name="new_todo_note">Note</string>
     <string name="new_todo_deadline">Deadline</string>
     <string name="new_todo_time_duration">Duration</string>

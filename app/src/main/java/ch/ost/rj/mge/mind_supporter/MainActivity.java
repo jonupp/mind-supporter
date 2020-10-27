@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem show_pending = menu.getItem(0);
         MenuItem show_finished =  menu.getItem(1);
         MenuItem show_all =  menu.getItem(2);
+        MenuItem show_pending_sorted =  menu.getItem(3);
 
         switch(item.getTitle().toString()){
             case "Show pending":
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 ((ToDosAdapter)adapter).setAdapterDataBasis(ToDoStorage.getPending());
                 show_finished.setChecked(false);
                 show_all.setChecked(false);
+                show_pending_sorted.setChecked(false);
                 item.setChecked(true);
             }
             break;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 ((ToDosAdapter) adapter).setAdapterDataBasis(ToDoStorage.getFinished());
                 show_pending.setChecked(false);
                 show_all.setChecked(false);
+                show_pending_sorted.setChecked(false);
                 item.setChecked(true);
             }
             break;
@@ -65,7 +68,19 @@ public class MainActivity extends AppCompatActivity {
                 ((ToDosAdapter) adapter).setAdapterDataBasis(ToDoStorage.getToDoArrayList());
                 show_pending.setChecked(false);
                 show_finished.setChecked(false);
+                show_pending_sorted.setChecked(false);
                 item.setChecked(true);
+            }
+            break;
+        case "Show pending sorted":
+            if(item.isChecked()){
+                return;
+            }else {
+                ((ToDosAdapter) adapter).setAdapterDataBasis(ToDoStorage.getToDoArrayList());
+                show_pending.setChecked(false);
+                show_finished.setChecked(false);
+                show_pending_sorted.setChecked(true);
+                item.setChecked(false);
             }
             break;
         }
