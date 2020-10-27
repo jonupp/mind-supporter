@@ -28,15 +28,15 @@
         app:layout_constraintTop_toTopOf="@+id/new_todo_button_deadline_date" />
 
     <TextView
-        android:id="@+id/new_todo_text_time_expenditure"
+        android:id="@+id/new_todo_text_time_duration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:labelFor="@id/new_todo_numberpicker_time_expenditure"
-        android:text="@string/new_todo_time_expenditure"
+        android:labelFor="@id/new_todo_numberpicker_time_duration"
+        android:text="@string/new_todo_time_duration"
         app:layout_constraintEnd_toEndOf="@+id/new_todo_text_title"
         app:layout_constraintStart_toStartOf="@+id/new_todo_text_title"
-        app:layout_constraintBottom_toBottomOf="@id/new_todo_numberpicker_time_expenditure"
-        app:layout_constraintTop_toTopOf="@id/new_todo_numberpicker_time_expenditure"/>
+        app:layout_constraintBottom_toBottomOf="@id/new_todo_numberpicker_time_duration"
+        app:layout_constraintTop_toTopOf="@id/new_todo_numberpicker_time_duration"/>
 
     <TextView
         android:id="@+id/new_todo_text_priority"
@@ -104,7 +104,7 @@
         app:layout_constraintTop_toBottomOf="@+id/new_todo_edittext_title" />
 
     <NumberPicker
-        android:id="@+id/new_todo_numberpicker_time_expenditure"
+        android:id="@+id/new_todo_numberpicker_time_duration"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -119,9 +119,9 @@
         android:layout_marginStart="20dp"
         android:prompt="@string/app_name"
         android:popupBackground="@android:color/white"
-        app:layout_constraintStart_toEndOf="@id/new_todo_numberpicker_time_expenditure"
-        app:layout_constraintBottom_toBottomOf="@+id/new_todo_numberpicker_time_expenditure"
-        app:layout_constraintTop_toTopOf="@+id/new_todo_numberpicker_time_expenditure"
+        app:layout_constraintStart_toEndOf="@id/new_todo_numberpicker_time_duration"
+        app:layout_constraintBottom_toBottomOf="@+id/new_todo_numberpicker_time_duration"
+        app:layout_constraintTop_toTopOf="@+id/new_todo_numberpicker_time_duration"
         />
 
     <androidx.appcompat.widget.AppCompatRatingBar
@@ -134,7 +134,7 @@
         android:stepSize="1"
         android:importantForAutofill="no"
         app:layout_constraintStart_toEndOf="@+id/new_todo_text_priority"
-        app:layout_constraintTop_toBottomOf="@+id/new_todo_numberpicker_time_expenditure" />
+        app:layout_constraintTop_toBottomOf="@+id/new_todo_numberpicker_time_duration" />
 
     <EditText
         android:id="@+id/new_todo_edittext_note"

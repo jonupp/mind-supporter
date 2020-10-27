@@ -1,5 +1,7 @@
 package ch.ost.rj.mge.mind_supporter;
 
+import android.widget.RatingBar;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -69,8 +71,8 @@ public class ToDoStorage {
         persist();
     }
 
-    public static void removeToDoFromArrayList(ToDo todelete) throws IOException {
-        toDoArrayList.remove(todelete);
+    public static void removeToDoFromArrayList(ToDo toDelete) throws IOException {
+        toDoArrayList.remove(toDelete);
         sortDueTime();
         persist();
     }

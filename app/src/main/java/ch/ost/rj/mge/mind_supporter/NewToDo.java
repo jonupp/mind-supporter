@@ -37,10 +37,10 @@ public class NewToDo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_to_do);
         setSpinner();
-        //for editing existing ToDoObj
+        
         ToDo currentToDo;
         Bundle bundle = getIntent().getExtras();
-        final boolean isNew = (boolean) bundle.getBoolean("isNewFlag");
+        final boolean isNew = bundle.getBoolean("isNewFlag");
         if(!isNew){
             currentToDo = (ToDo) bundle.getSerializable("todo");
             deadlineYear = currentToDo.getDueDateTime().getYear();
@@ -69,13 +69,11 @@ public class NewToDo extends AppCompatActivity {
             }
         });
 
-        //get Image
         final FloatingActionButton pickPicture = findViewById(R.id.floating_action_button_pick_picture);
         pickPicture.setOnClickListener(v -> getImageFromLibrary());
         ImageView imageView = findViewById(R.id.new_todo_image);
         imageView.setImageURI(imageUri);
 
-        //save inputs as newToDo
         FloatingActionButton saveToDo = findViewById(R.id.floating_action_button_transact);
         saveToDo.setOnClickListener(v -> {
             try {
@@ -100,27 +98,12 @@ public class NewToDo extends AppCompatActivity {
     }
 
     private LocalDateTime createDateTime() {
+        if (deadlineYear > 9999 || deadlineYear < 1000) {return createDefaultDateTime();}
         String dateTime = deadlineYear + "-";
-        if (deadlineMonth < 10) {
-            dateTime += "0" + deadlineMonth + "-";
-        } else {
-            dateTime += deadlineMonth + "-";
-        }
-        if (deadlineDay < 10) {
-            dateTime += "0" + deadlineDay + " ";
-        } else {
-            dateTime += deadlineDay + " ";
-        }
-        if (deadlineHour < 10) {
-            dateTime += "0" + deadlineHour + ":";
-        } else {
-            dateTime += deadlineHour + ":";
-        }
-        if (deadlineDay < 10) {
-            dateTime += "0" + deadlineMinute;
-        } else {
-            dateTime += deadlineMinute;
-        }
+        dateTime += (deadlineMonth < 10 ? "0" + deadlineMonth + "-" : deadlineMonth + "-");
+        dateTime += (deadlineDay < 10 ? "0" + deadlineDay + " " : deadlineDay + " ");
+        dateTime += (deadlineHour < 10 ? "0" + deadlineHour + ":" : deadlineHour + ":");
+        dateTime += (deadlineMinute < 10 ? "0" + deadlineMinute : deadlineMinute);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.parse(dateTime, formatter);
     }
@@ -161,18 +144,18 @@ public class NewToDo extends AppCompatActivity {
     }
 
     private void setCurrentToDoInputs(ToDo currentToDo){
-        //set Title
+
         EditText etTitle = findViewById(R.id.new_todo_edittext_title);
         etTitle.setText(currentToDo.getTitle());
-        //set deadlineDate
+
         Button dateBtn = findViewById(R.id.new_todo_button_deadline_date);
         dateBtn.setText(deadlineDay+"."+deadlineMonth+"."+deadlineYear);
         Button timeBtn = findViewById(R.id.new_todo_button_deadline_time);
         timeBtn.setText(deadlineHour+":"+deadlineMinute);
-        //set Duration
-        NumberPicker np = findViewById(R.id.new_todo_numberpicker_time_expenditure);
+
+        NumberPicker np = findViewById(R.id.new_todo_numberpicker_time_duration);
         int durationMinutes = currentToDo.getDurationMinutes();
-        np.setMaxValue(durationMinutes*3);
+        np.setMaxValue((durationMinutes > 60) ? 180 : durationMinutes*3);
         Spinner spinner = findViewById(R.id.new_todo_spinner_timeunits);
         if(durationMinutes%(24*60) == 0){
             spinner.setSelection(2);
@@ -186,22 +169,21 @@ public class NewToDo extends AppCompatActivity {
             spinner.setSelection(0);
             np.setValue(durationMinutes);
         }
-        //set Priority
+
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
         ratingBar.setRating(currentToDo.getPriority());
-        //set Note
+
         EditText etNote = findViewById(R.id.new_todo_edittext_note);
         etNote.setText(currentToDo.getNote());
-        //set Status
+
         CheckBox cb = findViewById(R.id.new_todo_checkbox_status);
         cb.setChecked(currentToDo.isFinished());
-        //set Image
+
         ImageView image = findViewById(R.id.new_todo_image);
         image.setImageURI(Uri.parse(currentToDo.getImage()));
     }
 
     private void saveToDo(ToDo currentToDo, boolean isNew) throws IOException {
-        //get Title
         EditText et = findViewById(R.id.new_todo_edittext_title);
         currentToDo.setTitle(et.getText().toString());
         if (currentToDo.getTitle().isEmpty()) {
@@ -213,12 +195,12 @@ public class NewToDo extends AppCompatActivity {
             reactionToast("Deadline Date is not defined");
             return;
         }
-        //get Priority
         RatingBar ratingBar = findViewById(R.id.new_todo_ratingbar_priority);
         currentToDo.setPriority((int) ratingBar.getRating());
-        //get Note
+
         EditText editTextNote = findViewById(R.id.new_todo_edittext_note);
         currentToDo.setNote(editTextNote.getText().toString());
+
         Spinner timeSpinner = findViewById(R.id.new_todo_spinner_timeunits);
         timeUnit = timeSpinner.getSelectedItem().toString();
         switch (timeUnit) {
@@ -229,11 +211,8 @@ public class NewToDo extends AppCompatActivity {
                 currentToDo.setDurationMinutes(currentToDo.getDurationMinutes() * 60 * 24);
                 break;
         }
-        //get dueDateTime
         currentToDo.setDueDateTime(createDateTime());
-        //save image
         currentToDo.setImage(imageUri.toString());
-        //save & return
         ToDoStorage.addToToDoArrayList(currentToDo);
         showAllToDos();
     }
@@ -263,7 +242,7 @@ public class NewToDo extends AppCompatActivity {
     }
 
     private void getExpenditure(ToDo currentToDo) {
-        NumberPicker numberPicker = findViewById(R.id.new_todo_numberpicker_time_expenditure);
+        NumberPicker numberPicker = findViewById(R.id.new_todo_numberpicker_time_duration);
         if (numberPicker != null) {
             numberPicker.setMinValue(0);
             if (currentToDo.getDurationMinutes() != 0) {
