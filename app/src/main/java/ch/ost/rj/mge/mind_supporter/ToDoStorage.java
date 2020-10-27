@@ -62,11 +62,10 @@ public class ToDoStorage {
     }
 
     public static ArrayList<ToDo> getPendingSortedByPriority(){
-        ArrayList<ToDo> tmp = getPending();
         ArrayList<ToDo> out = new ArrayList<>();
         for (int i = 5; i >= 0; i--) {
-            for (ToDo toDo : tmp) {
-                if (toDo.getPriority() == i){
+            for (ToDo toDo : toDoArrayList) {
+                if (toDo.getPriority() == i && !toDo.isFinished()){
                     out.add(toDo);
                 }
             }

@@ -22,7 +22,10 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.filter_menu, menu);
         this.menu = menu;
+        this.menu.getItem(0).setChecked(false);
+        this.menu.getItem(1).setChecked(false);
         this.menu.getItem(2).setChecked(true);
+        this.menu.getItem(3).setChecked(false);
         return true;
     }
 
@@ -72,15 +75,15 @@ public class MainActivity extends AppCompatActivity {
                 item.setChecked(true);
             }
             break;
-        case "Show pending sorted":
+        case "Show sorted by Priority":
             if(item.isChecked()){
                 return;
             }else {
-                ((ToDosAdapter) adapter).setAdapterDataBasis(ToDoStorage.getToDoArrayList());
+                ((ToDosAdapter) adapter).setAdapterDataBasis(ToDoStorage.getPendingSortedByPriority());
                 show_pending.setChecked(false);
                 show_finished.setChecked(false);
-                show_pending_sorted.setChecked(true);
-                item.setChecked(false);
+                show_all.setChecked(false);
+                item.setChecked(true);
             }
             break;
         }

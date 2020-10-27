@@ -16,5 +16,10 @@
                 android:title="@string/show_all"
                 android:checkable="true"
                 />
+            <item android:id="@+id/show_pending_sorted"
+                android:onClick="onGroupItemClick"
+                android:title="@string/show_sorted_by_priority"
+                android:checkable="true"
+                />
     </group>
 </menu>
