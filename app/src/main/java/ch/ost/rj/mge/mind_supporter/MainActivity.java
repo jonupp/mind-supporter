@@ -22,10 +22,7 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.filter_menu, menu);
         this.menu = menu;
-        this.menu.getItem(0).setChecked(false);
-        this.menu.getItem(1).setChecked(false);
         this.menu.getItem(2).setChecked(true);
-        this.menu.getItem(3).setChecked(false);
         return true;
     }
 

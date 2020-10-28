@@ -23,6 +23,7 @@
     <string name="save">save ToDo</string>
     <string name="pick_picture">pick Picture from Library</string>
     <string name="content_descriptor_floating_button">A button to add a todo</string>
+    <string name="content_descriptor_floating_button_sort">A button to sort todos</string>
     <string-array name="time_units">
         <item>minutes</item>
         <item>hours</item>

@@ -29,4 +29,19 @@
         app:borderWidth="0dp"
         android:contentDescription="@string/content_descriptor_floating_button" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButtonSort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_sort_alphabetically"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:tint="@android:color/white"
+        app:borderWidth="0dp"
+        android:contentDescription="@string/content_descriptor_floating_button_sort" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
