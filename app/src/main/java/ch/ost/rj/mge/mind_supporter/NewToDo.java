@@ -27,6 +27,7 @@ import java.util.Calendar;
 public class NewToDo extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
+    ToDo currentToDo;
 
     String timeUnit;
     int deadlineYear, deadlineMonth, deadlineDay, deadlineHour = 10, deadlineMinute;
@@ -38,7 +39,6 @@ public class NewToDo extends AppCompatActivity {
         setContentView(R.layout.activity_new_to_do);
         setSpinner();
         
-        ToDo currentToDo;
         Bundle bundle = getIntent().getExtras();
         final boolean isNew = bundle.getBoolean("isNewFlag");
         if(!isNew){
@@ -119,6 +119,21 @@ public class NewToDo extends AppCompatActivity {
         intent.setAction(Intent. ACTION_OPEN_DOCUMENT );
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = getIntent().getExtras();
+        final boolean isNew = bundle.getBoolean("isNewFlag");
+        if (!isNew){
+            try {
+                saveToDo(currentToDo, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            showAllToDos();
+        }
     }
 
     @Override

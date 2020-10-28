@@ -50,7 +50,11 @@ public class ToDosAdapter extends RecyclerView.Adapter<ToDosViewHolder> {
             editNoteIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             editNoteIntent.putExtra("todo", todo);
             editNoteIntent.putExtra("isNewFlag", false);
-            toDoArrayList.remove(todo);
+            try {
+                ToDoStorage.removeToDoFromArrayList(todo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             context.startActivity(editNoteIntent);
         });
 
