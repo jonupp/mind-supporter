@@ -27,7 +27,7 @@ import java.util.Calendar;
 public class NewToDo extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
-    ToDo currentToDo;
+    ToDo currentToDo, existingToDo;
 
     String timeUnit;
     int deadlineYear, deadlineMonth, deadlineDay, deadlineHour = 10, deadlineMinute;
@@ -43,16 +43,17 @@ public class NewToDo extends AppCompatActivity {
         final boolean isNew = bundle.getBoolean("isNewFlag");
         if(!isNew){
             currentToDo = (ToDo) bundle.getSerializable("todo");
+            existingToDo = currentToDo.copy();
             deadlineYear = currentToDo.getDueDateTime().getYear();
             deadlineMonth = currentToDo.getDueDateTime().getMonthValue();
             deadlineDay = currentToDo.getDueDateTime().getDayOfMonth();
             deadlineHour = currentToDo.getDueDateTime().getHour();
             deadlineMinute = currentToDo.getDueDateTime().getMinute();
-            getExpenditure(currentToDo);
-            setCurrentToDoInputs(currentToDo);
+            getDuration();
+            setCurrentToDoInputs();
         }else {
-            currentToDo = new ToDo("", createDefaultDateTime(), 0, 0, false, "../../res/drawable/image_placeholder.xml", "");
-            getExpenditure(currentToDo);
+            currentToDo = new ToDo("", createDefaultDateTime(), 1, 0, false, "../../res/drawable/image_placeholder.xml", "");
+            getDuration();
         }
         imageUri = Uri.parse(currentToDo.getImage());
 
@@ -60,7 +61,8 @@ public class NewToDo extends AppCompatActivity {
         abortBtn.setOnClickListener(v -> {
             if (!isNew){
                 try {
-                    saveToDo(currentToDo, false);
+                    currentToDo = existingToDo.copy();
+                    saveToDo();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -77,14 +79,14 @@ public class NewToDo extends AppCompatActivity {
         FloatingActionButton saveToDo = findViewById(R.id.floating_action_button_transact);
         saveToDo.setOnClickListener(v -> {
             try {
-                saveToDo(currentToDo, isNew);
+                saveToDo();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
 
         getDeadline();
-        getStatus(currentToDo);
+        getStatus();
     }
 
     private void reactionToast(String note) {
@@ -127,7 +129,8 @@ public class NewToDo extends AppCompatActivity {
         final boolean isNew = bundle.getBoolean("isNewFlag");
         if (!isNew){
             try {
-                saveToDo(currentToDo, false);
+                currentToDo = existingToDo.copy();
+                saveToDo();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -158,7 +161,7 @@ public class NewToDo extends AppCompatActivity {
         }
     }
 
-    private void setCurrentToDoInputs(ToDo currentToDo){
+    private void setCurrentToDoInputs(){
 
         EditText etTitle = findViewById(R.id.new_todo_edittext_title);
         etTitle.setText(currentToDo.getTitle());
@@ -168,9 +171,9 @@ public class NewToDo extends AppCompatActivity {
         Button timeBtn = findViewById(R.id.new_todo_button_deadline_time);
         timeBtn.setText(deadlineHour+":"+deadlineMinute);
 
-        NumberPicker np = findViewById(R.id.new_todo_numberpicker_time_duration);
         int durationMinutes = currentToDo.getDurationMinutes();
-        np.setMaxValue((durationMinutes > 60) ? 180 : durationMinutes*3);
+        NumberPicker np = findViewById(R.id.new_todo_numberpicker_time_duration);
+        np.setMaxValue((durationMinutes > 36) ? 180 : durationMinutes*5);
         Spinner spinner = findViewById(R.id.new_todo_spinner_timeunits);
         if(durationMinutes%(24*60) == 0){
             spinner.setSelection(2);
@@ -198,7 +201,7 @@ public class NewToDo extends AppCompatActivity {
         image.setImageURI(Uri.parse(currentToDo.getImage()));
     }
 
-    private void saveToDo(ToDo currentToDo, boolean isNew) throws IOException {
+    private void saveToDo() throws IOException {
         EditText et = findViewById(R.id.new_todo_edittext_title);
         currentToDo.setTitle(et.getText().toString());
         if (currentToDo.getTitle().isEmpty()) {
@@ -256,13 +259,11 @@ public class NewToDo extends AppCompatActivity {
         });
     }
 
-    private void getExpenditure(ToDo currentToDo) {
+    private void getDuration() {
         NumberPicker numberPicker = findViewById(R.id.new_todo_numberpicker_time_duration);
         if (numberPicker != null) {
-            numberPicker.setMinValue(0);
-            if (currentToDo.getDurationMinutes() != 0) {
-                numberPicker.setMaxValue(currentToDo.getDurationMinutes());
-            }else numberPicker.setMaxValue(180);
+            numberPicker.setMinValue(1);
+            numberPicker.setMaxValue(180);
             numberPicker.setWrapSelectorWheel(true);
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> currentToDo.setDurationMinutes(newVal));
         }
@@ -277,7 +278,7 @@ public class NewToDo extends AppCompatActivity {
         timeUnit = timeSpinner.getSelectedItem().toString();
     }
 
-    private void getStatus(ToDo currentToDo) {
+    private void getStatus() {
         CheckBox checkBox = findViewById(R.id.new_todo_checkbox_status);
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> currentToDo.setFinished(isChecked));
     }

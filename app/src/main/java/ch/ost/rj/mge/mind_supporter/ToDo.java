@@ -26,6 +26,10 @@ public class ToDo implements Serializable {
         this.image=image;
     }
 
+    public ToDo copy(){
+        return new ToDo(this.getTitle(), this.getDueDateTime(), this.getDurationMinutes(), this.getPriority(), this.isFinished(), this.getImage(), this.getNote());
+    }
+
     public String getTitle() {
         return title;
     }
