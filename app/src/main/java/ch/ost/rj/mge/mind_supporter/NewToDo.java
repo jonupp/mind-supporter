@@ -27,7 +27,7 @@ import java.util.Calendar;
 public class NewToDo extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
-
+    ToDo currentToDo;
     String timeUnit;
     int deadlineYear, deadlineMonth, deadlineDay, deadlineHour = 10, deadlineMinute;
     Uri imageUri = Uri.parse("../../res/drawable/image_placeholder.xml");
@@ -38,7 +38,7 @@ public class NewToDo extends AppCompatActivity {
         setContentView(R.layout.activity_new_to_do);
         setSpinner();
         
-        ToDo currentToDo;
+
         Bundle bundle = getIntent().getExtras();
         final boolean isNew = bundle.getBoolean("isNewFlag");
         if(!isNew){
@@ -55,6 +55,7 @@ public class NewToDo extends AppCompatActivity {
             getExpenditure(currentToDo);
         }
         imageUri = Uri.parse(currentToDo.getImage());
+
 
         FloatingActionButton abortBtn = findViewById(R.id.floating_action_button_abort);
         abortBtn.setOnClickListener(v -> {
@@ -85,6 +86,21 @@ public class NewToDo extends AppCompatActivity {
 
         getDeadline();
         getStatus(currentToDo);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = getIntent().getExtras();
+        final boolean isNew = bundle.getBoolean("isNewFlag");
+        if (!isNew){
+            try {
+                saveToDo(currentToDo, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            showAllToDos();
+        }
     }
 
     private void reactionToast(String note) {
